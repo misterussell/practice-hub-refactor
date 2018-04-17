@@ -4,6 +4,10 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import PropTypes from 'prop-types';
 
+import Routes from '../Routes';
+
+import Store from '../Store';
+
 const Navigation = props => (
   <div className="app-container">
     <Navbar fluid collapseOnSelect>
@@ -15,7 +19,11 @@ const Navigation = props => (
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav pullRight>
-          <LinkContainer to="/gameOfLife">
+          <LinkContainer to={{
+              pathname: "/gameOfLife",
+              state: { store: Store }
+            }}
+          >
             <NavItem eventKey={1}>
               Game Of Life
             </NavItem>
@@ -28,14 +36,12 @@ const Navigation = props => (
         </Nav>
       </Navbar.Collapse>
     </Navbar>
-    {
-      props.children
-    }
+    <Routes />
   </div>
 );
 
-Navigation.propTypes = {
-  children: PropTypes.shape({}).isRequired
-};
+// Navigation.propTypes = {
+//   children: PropTypes.shape({}).isRequired
+// };
 
 export default Navigation;

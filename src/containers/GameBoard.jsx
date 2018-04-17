@@ -1,38 +1,19 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 
-import Store from '../Store';
-
-class GameBoard extends Component {
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      gridSize: 0,
-      minGridSize: 5,
-      userGridSelection: 0,
-      cells: [],
-    };
-  }
-
-  componentWillMount() {
-    this.setState((prevState) => {
-      const gridSize = prevState.userGridSelection + prevState.minGridSize;
-      Store.cells.newCellArray((gridSize) ** 2);
-      const cells = Store.cells.cells;
-      return {
-        gridSize,
-        cells,
-      };
-    });
-  }
-
+@observer class GameBoard extends Component {
+  // this component should observe the raw array of cells and inject them into the grid.
   render() {
-    console.log(this.state);
+    const store = this.props.location.state.store;
     return (
       <div className="universe">
-        Complete Board
+        {
+        }
+        <button onClick={ this.addCell }>Add Cell</button>
       </div>
     );
   }
+
 }
 
 export default GameBoard;

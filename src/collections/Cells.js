@@ -1,17 +1,16 @@
 // import Cell from '../models/Cell';
 //
-
-import { observable, computed } from 'mobx';
+import { observable } from 'mobx';
 
 class Cells {
   @observable cells = [];
 
   newCellArray(val) {
-    for (let i = 0; i < val; i + 1) {
+    this.cells = [];
+    for (let i = 0; i < val; i++) {
       this.cells.push(0);
     }
   }
-
 }
 
 export default Cells;
