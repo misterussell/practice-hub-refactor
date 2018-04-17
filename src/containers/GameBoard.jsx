@@ -4,6 +4,8 @@ import { observer } from 'mobx-react';
 
 import { Grid, Cell } from '../components';
 
+// faut pas direct le state a propose de le diff contre les arr
+// il faut qu'il define la tous en particulier
 @observer class GameBoard extends Component {
   componentWillMount() {
     const store = this.props.location.state.store;
@@ -22,11 +24,13 @@ import { Grid, Cell } from '../components';
           {
             store.cellStore.cells.map((cell, i) => (
               <Cell
-                key={i}
-                callback={this.handleCellClick.bind(this)}
+                key={`cell${cell}`}
+                callback={this.handleCellClick}
                 cellstate={cell}
                 cellnumber={i}
-                style={{height: store.gridUI.createCellHeight(Math.sqrt(store.cellStore.cellArrayLength))}}
+                style={{
+                  height: store.gridUI.createCellHeight(Math.sqrt(store.cellStore.cellArrayLength)),
+                }}
               />
             ))
           }
