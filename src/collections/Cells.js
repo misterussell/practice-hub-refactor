@@ -25,6 +25,13 @@ class CellStore {
   @computed get cellArrayLength() {
     return this.cells.length;
   }
+
+  updateCellArray(i) {
+    const cells = [...this.cells];
+    const newCellVal = cells[i] === 0 ? 1 : 0;
+    cells[i] = newCellVal;
+    this.cells = cells;
+  }
 }
 
 export default CellStore;

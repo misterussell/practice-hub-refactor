@@ -19,7 +19,7 @@ const Grid = props => (
 Grid.propTypes = {
   classname: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  gridTemplate: PropTypes.arrayOf(PropTypes.string).isRequired,
+  gridTemplate: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
 }
 
