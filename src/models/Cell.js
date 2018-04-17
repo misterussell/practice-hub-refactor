@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 
 export default class Cell {
-  @observable state = false;
+  // @observable state = false;
 
   getNextCellState(allCells) {
     const lowLimit = this.x === this.toroidalLimits[0] ? 1 : this.x + 1;

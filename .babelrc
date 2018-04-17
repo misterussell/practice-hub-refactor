@@ -3,7 +3,7 @@
   "plugins": ["react-hot-loader/babel", "babel-plugin-transform-object-rest-spread"],
   "env": {
     "test": {
-      "presets": ["react", "mobx", ["env", { "modules": "commonjs" }]],
+      "presets": ["es2015", "react", "mobx", ["env", { "modules": "commonjs" }]],
       "plugins": ["transform-es2015-modules-commonjs"]
     }
   }
