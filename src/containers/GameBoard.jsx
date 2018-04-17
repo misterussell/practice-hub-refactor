@@ -16,9 +16,11 @@ class GameBoard extends Component {
   componentWillMount() {
     this.setState((prevState) => {
       const gridSize = prevState.userGridSelection + prevState.minGridSize;
+      Store.cells.newCellArray((gridSize) ** 2);
+      const cells = Store.cells.cells;
       return {
         gridSize,
-        cells: Store.cells.createCellArray((gridSize) ** 2),
+        cells,
       };
     });
   }
