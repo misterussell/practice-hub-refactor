@@ -1,28 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Grid = () => (
-  // <div
-  //   className={props.classname}
-  //   style={{
-  //     display: 'grid',
-  //     width: props.width,
-  //     gridTemplateColumns: `${props.gridTemplate}`,
-  //     gridTemplateRows: `${props.gridTemplate}`,
-  //   }}
-  // >
-  //   { props.children }
-  // </div>
-  <div>
-    Grid
+const Grid = props => (
+  <div
+    className={props.classname}
+    style={{
+      width: props.width,
+      gridTemplateColumns: `${props.gridTemplate}`,
+      gridTemplateRows: `${props.gridTemplate}`,
+    }}
+  >
+    {
+      props.children
+    }
   </div>
 );
 
-// Grid.propTypes = {
-//   width: PropTypes.number.isRequired,
-//   gridTemplate: PropTypes.string.isRequired,
-//   classname: PropTypes.string.isRequired,
-//   children: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-// };
+Grid.propTypes = {
+  classname: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  gridTemplate: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+}
 
 export default Grid;

@@ -1,20 +1,40 @@
 // import Cell from '../models/Cell';
 //
-
 import { observable, computed } from 'mobx';
 
-class Cells {
+class CellStore {
+  minRowLength = 5;
+  userRowPadding = 0;
+
   @observable cells = [];
 
-  newCellArray(val) {
-    for (let i = 0; i < val; i + 1) {
+  newCellArray() {
+    this.cells = [];
+    for (let i = 0; i < (this.minRowLength + this.userRowPadding) ** 2; i += 1) {
       this.cells.push(0);
     }
   }
 
+  addCells(val) {
+    for (let i = 0; i < val ** 2; i += 1) {
+      this.cells.push(0);
+      this.userRowPadding += val;
+    }
+  }
+
+  @computed get cellArrayLength() {
+    return this.cells.length;
+  }
+
+  updateCellArray(i) {
+    const cells = [...this.cells];
+    const newCellVal = cells[i] === 0 ? 1 : 0;
+    cells[i] = newCellVal;
+    this.cells = cells;
+  }
 }
 
-export default Cells;
+export default CellStore;
 // export default function Cells() {
 //   let hashMap = {};
 //

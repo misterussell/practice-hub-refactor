@@ -1,16 +1,14 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import Routes from './Routes';
 
 import { Navigation } from './containers';
 
 const App = () => (
-  <BrowserRouter>
-    <Navigation>
-      <Routes />
-    </Navigation>
-  </BrowserRouter>
+  <Router>
+    <Navigation />
+  </Router>
 );
 
 export default App;

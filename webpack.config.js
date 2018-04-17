@@ -30,6 +30,7 @@ module.exports = {
     host: 'localhost',
     port: '3000',
     hot: true,
+    historyApiFallback: true,
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
@@ -64,6 +65,7 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.join(__dirname, '/build'),
+    publicPath: '/',
   },
   plugins: dev ?
   [

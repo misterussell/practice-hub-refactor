@@ -1,70 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Cell = () => (
-  // <div
-  //   style={props.cellState === 0 ? 'cell' : 'cell active'}
-  //   className={ this.state.classname }
-  //   onClick={props.callback !== null ? props.callback(this.props.cellNumber) : null}
-  // >
-  //   <div className="hide">
-  //     { this.props.text }
-  //   </div>
-  // </div>
-  <div>
-    Cell
+const Cell = (props) => {
+  const handleClick = (e) => {
+    props.callback(props.cellnumber);
+  };
+  return (
+  <div
+    className={props.cellstate === 0 ? 'cell' : 'cell active'}
+    onClick={handleClick}
+  >
+    <div className="hide">
+      {
+        props.cell
+      }
+    </div>
   </div>
 );
+};
+
+Cell.propTypes = {
+  callback: PropTypes.func.isRequired,
+  cellnumber: PropTypes.number.isRequired,
+  cellstate: PropTypes.number.isRequired,
+  style: PropTypes.shape({}).isRequired,
+}
 
 export default Cell;
-
-// export default class Cell extends Component {
-//   constructor(...args) {
-//     super(...args);
-//
-//     this.handleClick = this.handleClick.bind(this);
-//
-//     this.state = {
-//       classname: 'cell'
-//     };
-//   };
-
-  // componentDidMount() {
-  //   this.setState((prevState, props) => {
-  //     const classname = props.cellState === 0 ? 'cell' : 'cell active';
-  //     return {
-  //       classname
-  //     };
-  //   });
-  // };
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevProps.cellState !== this.props.cellState) {
-  //     this.setState((prevState, props) => {
-  //       const classname = props.cellState === 0 ? 'cell' : 'cell active';
-  //       return {
-  //         classname
-  //       };
-  //     });
-  //   };
-  // };
-
-  // render() {
-  //   return (
-  //     <div
-  //       style={ this.state.cellStyle }
-  //       className={ this.state.classname }
-  //       onClick={ this.handleClick }
-  //     >
-  //       <div className="hide">
-  //         { this.props.text }
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // handleClick(e) {
-  //   e.preventDefault();
-  //   return this.props.callback !== null ? this.props.callback(this.props.cellNumber) : null;
-  // };
-
-// };
