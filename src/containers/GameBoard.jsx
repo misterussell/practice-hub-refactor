@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ButtonGroup, Button } from 'react-bootstrap';
 import { observer } from 'mobx-react';
 
 import { Grid, Cell } from '../components';
@@ -8,6 +9,7 @@ import { Grid, Cell } from '../components';
     const store = this.props.location.state.store;
     store.cellStore.newCellArray();
   }
+
   render() {
     const store = this.props.location.state.store;
     return (
@@ -29,7 +31,40 @@ import { Grid, Cell } from '../components';
             ))
           }
         </Grid>
-        <button onClick={ this.addCell.bind(this) }>Add Cell</button>
+        <div className="action-buttons">
+          <ButtonGroup>
+            <Button
+              bsStyle="primary"
+              onClick={this.addCell.bind(this)}
+            >
+              Start
+            </Button>
+            <Button
+              bsStyle="primary"
+              onClick={this.addCell.bind(this)}
+            >
+              Stop
+            </Button>
+            <Button
+              bsStyle="primary"
+              onClick={this.handleClear.bind(this)}
+            >
+              Clear
+            </Button>
+            <Button
+              bsStyle="primary"
+              onClick={this.addCell.bind(this)}
+            >
+              Grow GameBoard
+            </Button>
+            <Button
+              bsStyle="primary"
+              onClick={this.addCell.bind(this)}
+            >
+              Shrink Gameboard
+            </Button>
+          </ButtonGroup>
+        </div>
       </div>
     );
   }
@@ -39,11 +74,18 @@ import { Grid, Cell } from '../components';
     store.cellStore.updateCellArray(cell);
   }
 
-  addCell(e) {
+  handleStart(e) {}
+
+  handleStop(e) {}
+
+  handleClear(e) {
     e.preventDefault();
-    const store = this.props.location.state.store;
-    store.cellStore.addCells(2);
+    this.props.location.state.store.cellStore.newCellArray();
   }
+
+  handleGrow(e) {}
+
+  handleShrink(e) {}
 }
 
 export default GameBoard;
