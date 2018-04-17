@@ -1,25 +1,21 @@
-import { observable, computed } from 'mobx';
-
 class GridUI {
-  @observable minGridSize: null;
-  @observable userGridSelection: null;
-  @observable gridSize = null;
+  boardWidth: null;
 
   constructor() {
-    this.minGridSize = 5;
-    this.userGridSelection = 0;
-    this.gridSize = this.minGridSize + this.userGridSelection;
+    this.boardWidth = 500;
   }
 
-  @computed get gridSpecs() {
-    return this.gridSize;
+  get width() {
+    return this.boardWidth;
   }
 
-  growGrid(val) {
-    this.userGridSelection += val;
-    this.gridSize += val;
+  createGridTemplate(val) {
+    return Array.from(new Array(val), () => `${this.boardWidth / val}px`).join(' ');
   }
 
+  createCellHeight(val) {
+    return `${(this.boardWidth / val) - 5}px`;
+  }
 }
 
 export default GridUI;
