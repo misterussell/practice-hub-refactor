@@ -1,13 +1,17 @@
 import { action, computed, observable } from 'mobx';
 
+import Cell from './Cell';
+
 class Gameboard {
   constructor(rootStore) {
     this.rootStore = rootStore;
   }
+
   // grid observers
   @observable minRowLength = 5;
   @observable userRowPadding = 0;
   @observable cells = [];
+  hashMap = {};
 
   // grid settings
   @computed get cellArrayLength() {
@@ -20,6 +24,17 @@ class Gameboard {
 
   @computed get userGridAdjust() {
     return this.userRowPadding;
+  }
+
+  @action updateGameBoard = () => {
+    this.createHashMap();
+    this.getChangedCells().forEach(cell => this.updateCellArray(cell));
+  }
+
+  createHashMap() {
+    const toroidalArray = this.createToroidalArray();
+    const cellObjs = this.createCellObjects(toroidalArray);
+    return this.getNextCells(cellObjs);
   }
 
   @action newCellArray() {
@@ -36,7 +51,7 @@ class Gameboard {
     this.cells = cells;
   }
 
-  @action createToroidalArray() {
+  createToroidalArray() {
     const toroidalArray = [];
     const cells = [...this.cells];
 
@@ -72,89 +87,44 @@ class Gameboard {
     this.userRowPadding -= alpha;
   }
 
+  createCellObjects(array) {
+    const cellObjects = {};
+    let arrayPosition = 0;
+    array.forEach((terrain, i, arr) => {
+      terrain.forEach((cell, p, arr2) => {
+        const toroidalLimits = [arr.length, arr2.length];
+        const cellState = cell;
+        const cellObj = Cell(
+            i + 1,
+            p + 1,
+            cellState,
+            toroidalLimits,
+            arrayPosition,
+          );
+        arrayPosition += 1;
+        cellObjects[cellObj.cellHash] = cellObj;
+      });
+    });
+    this.hashMap = cellObjects;
+  }
+
+  getNextCells() {
+    Object.keys(this.hashMap).forEach(obj => this.updateCellinHashMap(obj));
+  }
+
+  updateCellinHashMap(id) {
+    this.hashMap[id] = this.hashMap[id].getNextCellState(this.hashMap);
+  }
+
+  getChangedCells() {
+    const changes = [];
+    Object.keys(this.hashMap).forEach((id) => {
+      if (this.hashMap[id].cellState !== this.hashMap[id].nextState) {
+        changes.push([this.hashMap[id].arrayPosition]);
+      }
+    });
+    return changes;
+  }
 }
 
 export default Gameboard;
-// export default function Cells() {
-//   let hashMap = {};
-//
-//   function getHashMap(cells, toroidalBound) {
-//     const toroidalArray = createToroidalArray(cells, toroidalBound);
-//     const cellObjs = createCellObjects(toroidalArray);
-//     const cellsWithNextState = getNextCells(cellObjs);
-//     return hashMap;
-//   }
-//
-//   function createCellArray(length) {
-//     let cells = [];
-//
-//     for (var i = 0; i < length; i++) {
-//       cells.push(0);
-//     }
-//
-//     return cells;
-//   }
-//
-//   function updateCellArray(cells) {
-//     let updatedCells = [];
-//     return updatedCells;
-//   }
-//
-
-//   function createCellObjects(rawCells) {
-//     let cellObjects = {};
-//     let arrayPosition = 0;
-//     rawCells.forEach((terrain, i, arr) => {
-//       terrain.forEach((cell, p, arr2) => {
-//         const toroidalLimits = [arr.length, arr2.length];
-//         const cellState = cell;
-//         let cellObj = Cell(
-//             i + 1,
-//             p + 1,
-//             cellState,
-//             toroidalLimits,
-//             arrayPosition
-//           );
-//         arrayPosition += 1;
-//         cellObjects[cellObj.cellHash] = cellObj;
-//       });
-//     });
-//     hashMap = cellObjects;
-//     return hashMap = cellObjects;
-//   }
-//
-//   function getNextCells() {
-//     for (let cell in hashMap) {
-//       hashMap[cell] = hashMap[cell].getNextCellState(hashMap);
-//     };
-//   }
-//
-//   function setNewCellsState() {
-//     let newState = {};
-//     for (let cell in hashMap) {
-//       hashMap[cell].cellState === hashMap[cell].nextState
-//         ? newState[cell] = hashMap[cell]
-//         : newState[cell] = hashMap[cell].changeCellState();
-//     };
-//     return newState;
-//   }
-//
-//   function getChangedCells() {
-//     let changes = {};
-//     for (var cell in hashMap) {
-//       if (hashMap[cell].cellState !== hashMap[cell].nextState) {
-//         changes[hashMap[cell].arrayPosition] = hashMap[cell].nextState;
-//       };
-//     };
-//     return changes;
-//   }
-//
-//   return Object.freeze({
-//     createCellArray,
-//     updateCellArray,
-//     createToroidalArray,
-//     getChangedCells,
-//     getHashMap
-//   });
-//
-// };
