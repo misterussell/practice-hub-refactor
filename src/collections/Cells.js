@@ -34,6 +34,17 @@ class CellStore {
     this.cells = cells;
   }
 
+  @action createToroidalArray() {
+    const toroidalArray = [];
+    const cells = [...this.cells];
+
+    for (let i = 0; i < this.totalRowLength ** 2; i += this.totalRowLength) {
+      toroidalArray.push(cells.slice(i, i + this.totalRowLength));
+    }
+
+    return toroidalArray;
+  }
+
   @action growCellArray(alpha) {
     const newRow = Array.from(new Array(Math.sqrt(this.cellArrayLength) + alpha), () => 0);
     const rowPadding = Array.from(new Array(alpha / 2), () => 0);
@@ -44,15 +55,19 @@ class CellStore {
     this.userRowPadding += 2;
   }
 
-  @action createToroidalArray() {
-    const toroidalArray = [];
-    const cells = [...this.cells];
-
-    for (let i = 0; i < this.totalRowLength ** 2; i += this.totalRowLength) {
-      toroidalArray.push(cells.slice(i, i + this.totalRowLength));
-    }
-
-    return toroidalArray;
+  @action shrinkCellArray(alpha) {
+    this.cells = this.createToroidalArray()
+                     .map((row, i, arr) => row.slice((alpha / 2), (arr[i].length - (alpha / 2))))
+                     .filter((row, i, arr) => {
+                       if (i === 0) {
+                         return false;
+                       } else if (i === arr.length - (alpha / 2)) {
+                         return false;
+                       }
+                       return true;
+                     })
+                     .reduce((a, b) => a.concat(b), []);
+    this.userRowPadding -= 2;
   }
 
 }

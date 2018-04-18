@@ -105,7 +105,8 @@ import { Grid, Cell } from '../components';
 
   handleShrink = (e) => {
     e.preventDefault()
-    console.log('shrink');
+    const store = this.props.location.state.store;
+    store.cellStore.userGridAdjust > 0 ? console.log(store.cellStore.shrinkCellArray(2)) : null;
   }
 }
 
