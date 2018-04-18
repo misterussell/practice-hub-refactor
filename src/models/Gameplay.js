@@ -13,11 +13,11 @@ export default class Gameplay {
     return this.gameState;
   }
 
-  @action updateState = (bool) => {
-    if (bool === false) {
+  @action updateState = (state) => {
+    if (state === false) {
       this.gameState = false;
       clearInterval(this.interval);
-    } else if (bool === true) {
+    } else if (state === true) {
       this.gameState = true;
       this.interval = setInterval(() => this.rootStore.gameboard.updateGameBoard(), 300);
     }
