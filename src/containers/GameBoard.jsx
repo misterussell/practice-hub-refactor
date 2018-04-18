@@ -7,6 +7,9 @@ import { Grid, Cell } from '../components';
 // faut pas direct le state a propose de le diff contre les arr
 // il faut qu'il define la tous en particulier
 @observer class GameBoard extends Component {
+  constructor(...args) {
+    super(...args);
+  }
   componentWillMount() {
     const store = this.props.location.state.store;
     store.cellStore.newCellArray();
@@ -24,7 +27,8 @@ import { Grid, Cell } from '../components';
           {
             store.cellStore.cells.map((cell, i) => (
               <Cell
-                key={`cell${cell}`}
+                key={`cell${i}`}
+                cell={cell}
                 callback={this.handleCellClick}
                 cellstate={cell}
                 cellnumber={i}
@@ -39,13 +43,13 @@ import { Grid, Cell } from '../components';
           <ButtonGroup>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
+              onClick={this.handleStart}
             >
               Start
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
+              onClick={this.handleStop.bind(this)}
             >
               Stop
             </Button>
@@ -57,13 +61,13 @@ import { Grid, Cell } from '../components';
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
+              onClick={this.handleGrow.bind(this)}
             >
               Grow GameBoard
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
+              onClick={this.handleShrink.bind(this)}
             >
               Shrink Gameboard
             </Button>
@@ -73,23 +77,36 @@ import { Grid, Cell } from '../components';
     );
   }
 
-  handleCellClick(cell) {
+  handleCellClick = (cell) => {
     const store = this.props.location.state.store;
     store.cellStore.updateCellArray(cell);
   }
 
-  handleStart(e) {}
+  handleStart = (e) => {
+    e.preventDefault()
+    console.log('start');
+  }
 
-  handleStop(e) {}
+  handleStop = (e) => {
+    e.preventDefault()
+    console.log('stop');
+  }
 
-  handleClear(e) {
+  handleClear = (e) => {
     e.preventDefault();
     this.props.location.state.store.cellStore.newCellArray();
   }
 
-  handleGrow(e) {}
+  handleGrow = (e) => {
+    e.preventDefault()
+    const store = this.props.location.state.store;
+    store.cellStore.userGridAdjust < 7 ? store.cellStore.growCellArray(2) : null;
+  }
 
-  handleShrink(e) {}
+  handleShrink = (e) => {
+    e.preventDefault()
+    console.log('shrink');
+  }
 }
 
 export default GameBoard;

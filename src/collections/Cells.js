@@ -1,37 +1,60 @@
 // import Cell from '../models/Cell';
 //
-import { observable, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
 
 class CellStore {
-  minRowLength = 5;
-  userRowPadding = 0;
+  @observable minRowLength = 5;
+  @observable userRowPadding = 0;
 
   @observable cells = [];
 
-  newCellArray() {
+  @computed get cellArrayLength() {
+    return this.cells.length;
+  }
+
+  @computed get totalRowLength() {
+    return this.minRowLength + this.userRowPadding;
+  }
+
+  @computed get userGridAdjust() {
+    return this.userRowPadding;
+  }
+
+  @action newCellArray() {
     this.cells = [];
     for (let i = 0; i < (this.minRowLength + this.userRowPadding) ** 2; i += 1) {
       this.cells.push(0);
     }
   }
 
-  addCells(val) {
-    for (let i = 0; i < val ** 2; i += 1) {
-      this.cells.push(0);
-      this.userRowPadding += val;
-    }
-  }
-
-  @computed get cellArrayLength() {
-    return this.cells.length;
-  }
-
-  updateCellArray(i) {
+  @action updateCellArray(i) {
     const cells = [...this.cells];
-    const newCellVal = cells[i] === 0 ? 1 : 0;
+    const newCellVal = this.cells[i] === 0 ? 1 : 0;
     cells[i] = newCellVal;
     this.cells = cells;
   }
+
+  @action growCellArray(alpha) {
+    const newRow = Array.from(new Array(Math.sqrt(this.cellArrayLength) + alpha), () => 0);
+    const rowPadding = Array.from(new Array(alpha / 2), () => 0);
+    const updatedRows = this.createToroidalArray()
+                            .map(row => [...rowPadding, ...row, ...rowPadding]);
+
+    this.cells = newRow.concat(...updatedRows, newRow);
+    this.userRowPadding += 2;
+  }
+
+  @action createToroidalArray() {
+    const toroidalArray = [];
+    const cells = [...this.cells];
+
+    for (let i = 0; i < this.totalRowLength ** 2; i += this.totalRowLength) {
+      toroidalArray.push(cells.slice(i, i + this.totalRowLength));
+    }
+
+    return toroidalArray;
+  }
+
 }
 
 export default CellStore;
@@ -60,15 +83,7 @@ export default CellStore;
 //     return updatedCells;
 //   }
 //
-//   function createToroidalArray(cells, toroidalBound) {
-//     let toroidalArray = [];
-//
-//     for (var i = 0; i < toroidalBound * toroidalBound; i += toroidalBound) {
-//       toroidalArray.push(cells.slice(i, i + toroidalBound));
-//     }
-//
-//     return toroidalArray;
-//   }
+
 //   function createCellObjects(rawCells) {
 //     let cellObjects = {};
 //     let arrayPosition = 0;
