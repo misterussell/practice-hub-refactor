@@ -3,6 +3,7 @@ logs
 *.log
 npm-debug.log*
 coverage
+blogposts
 
 # Dependency directories
 node_modules

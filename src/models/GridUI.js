@@ -1,7 +1,8 @@
 class GridUI {
   boardWidth: null;
 
-  constructor() {
+  constructor(rootStore) {
+    this.rootStore = rootStore;
     this.boardWidth = 500;
   }
 

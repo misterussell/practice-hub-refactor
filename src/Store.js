@@ -1,7 +1,5 @@
-import CellStore from './collections/Cells';
-import GridUI from './models/GridUI';
+import RootStore from './collections/RootStore';
 
 export default {
-  cellStore: new CellStore(),
-  gridUI: new GridUI(),
+  rootStore: new RootStore(),
 };

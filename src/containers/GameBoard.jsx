@@ -4,32 +4,31 @@ import { observer } from 'mobx-react';
 
 import { Grid, Cell } from '../components';
 
-// faut pas direct le state a propose de le diff contre les arr
-// il faut qu'il define la tous en particulier
 @observer class GameBoard extends Component {
   componentWillMount() {
-    const store = this.props.location.state.store;
-    store.cellStore.newCellArray();
+    const rootStore = this.props.location.state.store.rootStore;
+    rootStore.gameboard.newCellArray();
   }
 
   render() {
-    const store = this.props.location.state.store;
+    const rootStore = this.props.location.state.store.rootStore;
     return (
       <div className="game">
         <Grid
           classname={'life-board'}
-          width={store.gridUI.width}
-          gridTemplate={store.gridUI.createGridTemplate(Math.sqrt(store.cellStore.cellArrayLength))}
+          width={rootStore.gridUI.width}
+          gridTemplate={rootStore.gridUI.createGridTemplate(Math.sqrt(rootStore.gameboard.cellArrayLength))}
         >
           {
-            store.cellStore.cells.map((cell, i) => (
+            rootStore.gameboard.cells.map((cell, i) => (
               <Cell
-                key={`cell${cell}`}
+                key={`cell${i}`}
+                cell={cell}
                 callback={this.handleCellClick}
                 cellstate={cell}
                 cellnumber={i}
                 style={{
-                  height: store.gridUI.createCellHeight(Math.sqrt(store.cellStore.cellArrayLength)),
+                  height: rootStore.gridUI.createCellHeight(Math.sqrt(rootStore.gameboard.cellArrayLength)),
                 }}
               />
             ))
@@ -39,31 +38,25 @@ import { Grid, Cell } from '../components';
           <ButtonGroup>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
+              onClick={this.handleGameState}
             >
-              Start
+              { rootStore.gameplay.getState === true ? `Stop` : `Start` }
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
-            >
-              Stop
-            </Button>
-            <Button
-              bsStyle="primary"
-              onClick={this.handleClear.bind(this)}
+              onClick={ rootStore.gameplay.getState === false ? this.handleClear : null }
             >
               Clear
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
+              onClick={ rootStore.gameplay.getState === false ? this.handleGrow : null }
             >
               Grow GameBoard
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.addCell.bind(this)}
+              onClick={ rootStore.gameplay.getState === false ? this.handleShrink : null }
             >
               Shrink Gameboard
             </Button>
@@ -73,23 +66,36 @@ import { Grid, Cell } from '../components';
     );
   }
 
-  handleCellClick(cell) {
-    const store = this.props.location.state.store;
-    store.cellStore.updateCellArray(cell);
+  handleCellClick = (cell) => {
+    const rootStore = this.props.location.state.store.rootStore;
+    // the ternary operator is placed here rather than in the onClick declaration because of the required props
+    rootStore.gameplay.getState === false ? rootStore.gameboard.updateCellArray(cell) : null;
   }
 
-  handleStart(e) {}
-
-  handleStop(e) {}
-
-  handleClear(e) {
+  handleGameState = (e) => {
     e.preventDefault();
-    this.props.location.state.store.cellStore.newCellArray();
+    const rootStore = this.props.location.state.store.rootStore;
+    const nextState = rootStore.gameplay.getState === true ? false : true;
+    rootStore.gameplay.updateState(nextState);
   }
 
-  handleGrow(e) {}
+  handleClear = (e) => {
+    e.preventDefault();
+    const rootStore = this.props.location.state.store.rootStore;
+    rootStore.gameboard.newCellArray();
+  }
 
-  handleShrink(e) {}
+  handleGrow = (e) => {
+    e.preventDefault()
+    const rootStore = this.props.location.state.store.rootStore;
+    rootStore.gameboard.userGridAdjust < 7 ? store.rootStore.gameboard.growCellArray(2) : null;
+  }
+
+  handleShrink = (e) => {
+    e.preventDefault()
+    const rootStore = this.props.location.state.store.rootStore;
+    rootStore.gameboard.userGridAdjust > 0 ? store.rootStore.gameboard.shrinkCellArray(2) : null;
+  }
 }
 
 export default GameBoard;

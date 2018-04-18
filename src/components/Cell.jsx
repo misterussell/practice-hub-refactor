@@ -7,16 +7,16 @@ const Cell = (props) => {
     props.callback(props.cellnumber);
   };
   return (
-    <button
+    <div
       className={props.cellstate === 0 ? 'cell' : 'cell active'}
       onClick={handleClick}
     >
-      <div className="hide">
+      <span className="hide">
         {
           props.cell
         }
-      </div>
-    </button>
+      </span>
+    </div>
   );
 };
 
