@@ -7,12 +7,9 @@ import { Grid, Cell } from '../components';
 // faut pas direct le state a propose de le diff contre les arr
 // il faut qu'il define la tous en particulier
 @observer class GameBoard extends Component {
-  constructor(...args) {
-    super(...args);
-  }
   componentWillMount() {
     const store = this.props.location.state.store;
-    store.cellStore.newCellArray();
+    store.rootStore.gameboard.newCellArray();
   }
 
   render() {
@@ -21,11 +18,11 @@ import { Grid, Cell } from '../components';
       <div className="game">
         <Grid
           classname={'life-board'}
-          width={store.gridUI.width}
-          gridTemplate={store.gridUI.createGridTemplate(Math.sqrt(store.cellStore.cellArrayLength))}
+          width={store.rootStore.gridUI.width}
+          gridTemplate={store.rootStore.gridUI.createGridTemplate(Math.sqrt(store.rootStore.gameboard.cellArrayLength))}
         >
           {
-            store.cellStore.cells.map((cell, i) => (
+            store.rootStore.gameboard.cells.map((cell, i) => (
               <Cell
                 key={`cell${i}`}
                 cell={cell}
@@ -33,7 +30,7 @@ import { Grid, Cell } from '../components';
                 cellstate={cell}
                 cellnumber={i}
                 style={{
-                  height: store.gridUI.createCellHeight(Math.sqrt(store.cellStore.cellArrayLength)),
+                  height: store.rootStore.gridUI.createCellHeight(Math.sqrt(store.rootStore.gameboard.cellArrayLength)),
                 }}
               />
             ))
@@ -43,25 +40,25 @@ import { Grid, Cell } from '../components';
           <ButtonGroup>
             <Button
               bsStyle="primary"
-              onClick={this.handleStart}
+              onClick={this.handleGameState}
             >
               Start
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.handleStop.bind(this)}
+              onClick={this.handleGameState}
             >
               Stop
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.handleClear.bind(this)}
+              onClick={this.handleClear}
             >
               Clear
             </Button>
             <Button
               bsStyle="primary"
-              onClick={this.handleGrow.bind(this)}
+              onClick={this.handleGrow}
             >
               Grow GameBoard
             </Button>
@@ -79,34 +76,32 @@ import { Grid, Cell } from '../components';
 
   handleCellClick = (cell) => {
     const store = this.props.location.state.store;
-    store.cellStore.updateCellArray(cell);
+    store.rootStore.gameboard.updateCellArray(cell);
   }
 
-  handleStart = (e) => {
-    e.preventDefault()
-    console.log('start');
-  }
-
-  handleStop = (e) => {
-    e.preventDefault()
-    console.log('stop');
+  handleGameState = (e) => {
+    e.preventDefault();
+    const store = this.props.location.state.store;
+    console.log('click');
+    store.rootStore.gameboard.stretch();
   }
 
   handleClear = (e) => {
     e.preventDefault();
-    this.props.location.state.store.cellStore.newCellArray();
+    const store = this.props.location.state.store;
+    store.rootStore.gameboard.newCellArray();
   }
 
   handleGrow = (e) => {
     e.preventDefault()
     const store = this.props.location.state.store;
-    store.cellStore.userGridAdjust < 7 ? store.cellStore.growCellArray(2) : null;
+    store.rootStore.gameboard.userGridAdjust < 7 ? store.rootStore.gameboard.growCellArray(2) : null;
   }
 
   handleShrink = (e) => {
     e.preventDefault()
     const store = this.props.location.state.store;
-    store.cellStore.userGridAdjust > 0 ? console.log(store.cellStore.shrinkCellArray(2)) : null;
+    store.rootStore.gameboard.userGridAdjust > 0 ? store.rootStore.gameboard.shrinkCellArray(2) : null;
   }
 }
 

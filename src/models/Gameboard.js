@@ -1,13 +1,15 @@
-// import Cell from '../models/Cell';
-//
 import { action, computed, observable } from 'mobx';
 
-class CellStore {
+class Gameboard {
+  constructor(rootStore) {
+    this.rootStore = rootStore;
+  }
+  // grid observers
   @observable minRowLength = 5;
   @observable userRowPadding = 0;
-
   @observable cells = [];
 
+  // grid settings
   @computed get cellArrayLength() {
     return this.cells.length;
   }
@@ -52,7 +54,7 @@ class CellStore {
                             .map(row => [...rowPadding, ...row, ...rowPadding]);
 
     this.cells = newRow.concat(...updatedRows, newRow);
-    this.userRowPadding += 2;
+    this.userRowPadding += alpha;
   }
 
   @action shrinkCellArray(alpha) {
@@ -67,12 +69,12 @@ class CellStore {
                        return true;
                      })
                      .reduce((a, b) => a.concat(b), []);
-    this.userRowPadding -= 2;
+    this.userRowPadding -= alpha;
   }
 
 }
 
-export default CellStore;
+export default Gameboard;
 // export default function Cells() {
 //   let hashMap = {};
 //
