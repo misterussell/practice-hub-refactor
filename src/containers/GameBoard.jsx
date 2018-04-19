@@ -10,7 +10,6 @@ import { Grid, Cell } from '../components';
   }
 
   componentWillMount() {
-    console.log(this.props)
     const rootStore = this.props.store.rootStore;
     rootStore.gameboard.newCellArray();
   }
