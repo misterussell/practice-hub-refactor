@@ -138,8 +138,12 @@ class Gameboard {
   // // this function sends the updates to the array updater for processing
   updateGameBoard() {
     const hashMap = this.createHashMap();
-    Gameboard.getChangedCells(hashMap)
-             .forEach(cell => this.setCellArray(this.updateCellArray(cell)));
+    if (Gameboard.getChangedCells(hashMap).length === 0) {
+      this.rootStore.gameplay.setGameOver(true);
+    } else {
+      Gameboard.getChangedCells(hashMap)
+               .forEach(cell => this.setCellArray(this.updateCellArray(cell)));
+    }
   }
 
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { observer } from 'mobx-react';
 
-import { Grid, Cell } from '../components';
+import { Grid, Cell, Hero } from '../components';
 
 @observer class GameBoard extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ import { Grid, Cell } from '../components';
 
   render() {
     const rootStore = this.props.store.rootStore;
+    const hero = rootStore.gameplay.gameOverState ? <Hero /> : null;
     return (
       <div className="game">
         <Grid
@@ -66,6 +67,9 @@ import { Grid, Cell } from '../components';
             </Button>
           </ButtonGroup>
         </div>
+        {
+          hero
+        }
       </div>
     );
   }
@@ -100,6 +104,12 @@ import { Grid, Cell } from '../components';
     e.preventDefault()
     const rootStore = this.props.store.rootStore;
     rootStore.gameboard.userGridAdjust > 0 ? rootStore.gameboard.shrinkCellArray(2) : null;
+  }
+
+  handleGameOver = (e) => {
+    e.preventDefault();
+    const rootStore = this.props.store.rootStore;
+    rootStore.gameplay.setGameOver(true);
   }
 }
 
