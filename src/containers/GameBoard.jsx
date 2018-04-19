@@ -5,13 +5,17 @@ import { observer } from 'mobx-react';
 import { Grid, Cell } from '../components';
 
 @observer class GameBoard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentWillMount() {
-    const rootStore = this.props.location.state.store.rootStore;
+    const rootStore = this.props.store.rootStore;
     rootStore.gameboard.newCellArray();
   }
 
   render() {
-    const rootStore = this.props.location.state.store.rootStore;
+    const rootStore = this.props.store.rootStore;
     return (
       <div className="game">
         <Grid
@@ -67,34 +71,35 @@ import { Grid, Cell } from '../components';
   }
 
   handleCellClick = (cell) => {
-    const rootStore = this.props.location.state.store.rootStore;
+    const gameboard = this.props.store.rootStore.gameboard;
+    const gameplay = this.props.store.rootStore.gameplay;
     // the ternary operator is placed here rather than in the onClick declaration because of the required props
-    rootStore.gameplay.getState === false ? rootStore.gameboard.updateCellArray(cell) : null;
+    gameplay.getState === false ? gameboard.setCellArray(gameboard.updateCellArray(cell)) : null;
   }
 
   handleGameState = (e) => {
     e.preventDefault();
-    const rootStore = this.props.location.state.store.rootStore;
+    const rootStore = this.props.store.rootStore;
     const nextState = rootStore.gameplay.getState === true ? false : true;
     rootStore.gameplay.updateState(nextState);
   }
 
   handleClear = (e) => {
     e.preventDefault();
-    const rootStore = this.props.location.state.store.rootStore;
+    const rootStore = this.props.store.rootStore;
     rootStore.gameboard.newCellArray();
   }
 
   handleGrow = (e) => {
     e.preventDefault()
-    const rootStore = this.props.location.state.store.rootStore;
-    rootStore.gameboard.userGridAdjust < 7 ? store.rootStore.gameboard.growCellArray(2) : null;
+    const rootStore = this.props.store.rootStore;
+    rootStore.gameboard.userGridAdjust < 7 ? rootStore.gameboard.growCellArray(2) : null;
   }
 
   handleShrink = (e) => {
     e.preventDefault()
-    const rootStore = this.props.location.state.store.rootStore;
-    rootStore.gameboard.userGridAdjust > 0 ? store.rootStore.gameboard.shrinkCellArray(2) : null;
+    const rootStore = this.props.store.rootStore;
+    rootStore.gameboard.userGridAdjust > 0 ? rootStore.gameboard.shrinkCellArray(2) : null;
   }
 }
 

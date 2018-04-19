@@ -42,3 +42,5 @@ Because I don't want to have to keep bootstrapping things to get back to my conf
 - [Best Practices for Stores](https://mobx.js.org/best/store.html)
 - [Using intervals/Core API Docs](https://mobx.js.org/refguide/api.html)
 - [How to handle refresh failure with webpack](https://tylermcginnis.com/react-router-cannot-get-url-refresh/)
+- [Rendering component with route props](https://github.com/ReactTraining/react-router/issues/5521)
+- [Setters / @actions - Why a setter cannot be wrapped in @action](https://github.com/mobxjs/mobx/issues/839#issuecomment-286404160)

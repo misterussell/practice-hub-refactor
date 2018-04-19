@@ -19,11 +19,7 @@ const Navigation = props => (
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav pullRight>
-          <LinkContainer to={{
-              pathname: "/gameOfLife",
-              state: { store: Store }
-            }}
-          >
+          <LinkContainer to="/gameOfLife">
             <NavItem eventKey={1}>
               Game Of Life
             </NavItem>

@@ -7,7 +7,7 @@ import Store from './Store';
 const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
-    <Route path="/gameOfLife" component={GameBoard} />
+    <Route path="/gameOfLife" render={() => <GameBoard store={Store}/>} />
     <Route component={RouteNotFound} />
   </Switch>
 );

@@ -5,15 +5,20 @@ import Cell from './Cell';
 class Gameboard {
   constructor(rootStore) {
     this.rootStore = rootStore;
+    this.setCellArray(this.newCellArray());
   }
 
-  // grid observers
-  @observable minRowLength = 5;
-  @observable userRowPadding = 0;
+  // grid observer
   @observable cells = [];
-  hashMap = {};
 
-  // grid settings
+  // unobserved settings
+  minRowLength = 5;
+  userRowPadding = 0;
+
+  // these functions are used to create the array required
+  // to supply the view with the required props.
+
+  // // grid settings
   @computed get cellArrayLength() {
     return this.cells.length;
   }
@@ -26,29 +31,51 @@ class Gameboard {
     return this.userRowPadding;
   }
 
-  @action updateGameBoard = () => {
-    this.createHashMap();
-    this.getChangedCells().forEach(cell => this.updateCellArray(cell));
-  }
-
-  createHashMap() {
-    const toroidalArray = this.createToroidalArray();
-    const cellObjs = this.createCellObjects(toroidalArray);
-    return this.getNextCells(cellObjs);
-  }
-
   @action newCellArray() {
-    this.cells = [];
+    const cells = [];
+
     for (let i = 0; i < (this.minRowLength + this.userRowPadding) ** 2; i += 1) {
-      this.cells.push(0);
+      cells.push(0);
     }
+
+    return cells;
   }
 
-  @action updateCellArray(i) {
+  // // all changes to @observable cells should be made with this setter
+  @action setCellArray(arr) {
+    this.cells = arr;
+  }
+
+  updateCellArray(i) {
     const cells = [...this.cells];
     const newCellVal = this.cells[i] === 0 ? 1 : 0;
     cells[i] = newCellVal;
-    this.cells = cells;
+    return cells;
+  }
+
+  growCellArray(alpha) {
+    const newRow = Array.from(new Array(Math.sqrt(this.cellArrayLength) + alpha), () => 0);
+    const rowPadding = Array.from(new Array(alpha / 2), () => 0);
+    const updatedRows = this.createToroidalArray()
+                            .map(row => [...rowPadding, ...row, ...rowPadding]);
+    this.setCellArray(newRow.concat(...updatedRows, newRow));
+    this.userRowPadding += alpha;
+  }
+
+  shrinkCellArray(alpha) {
+    const cells = this.createToroidalArray()
+                     .map((row, i, arr) => row.slice((alpha / 2), (arr[i].length - (alpha / 2))))
+                     .filter((row, i, arr) => {
+                       if (i === 0) {
+                         return false;
+                       } else if (i === arr.length - (alpha / 2)) {
+                         return false;
+                       }
+                       return true;
+                     })
+                     .reduce((a, b) => a.concat(b), []);
+    this.setCellArray(cells);
+    this.userRowPadding -= alpha;
   }
 
   createToroidalArray() {
@@ -62,32 +89,15 @@ class Gameboard {
     return toroidalArray;
   }
 
-  @action growCellArray(alpha) {
-    const newRow = Array.from(new Array(Math.sqrt(this.cellArrayLength) + alpha), () => 0);
-    const rowPadding = Array.from(new Array(alpha / 2), () => 0);
-    const updatedRows = this.createToroidalArray()
-                            .map(row => [...rowPadding, ...row, ...rowPadding]);
+  // these functions are used to compute the next values for the game array
 
-    this.cells = newRow.concat(...updatedRows, newRow);
-    this.userRowPadding += alpha;
+  createHashMap() {
+    const toroidalArray = this.createToroidalArray();
+    const cellObjs = Gameboard.createCellObjects(toroidalArray);
+    return Gameboard.getNextCells(cellObjs);
   }
 
-  @action shrinkCellArray(alpha) {
-    this.cells = this.createToroidalArray()
-                     .map((row, i, arr) => row.slice((alpha / 2), (arr[i].length - (alpha / 2))))
-                     .filter((row, i, arr) => {
-                       if (i === 0) {
-                         return false;
-                       } else if (i === arr.length - (alpha / 2)) {
-                         return false;
-                       }
-                       return true;
-                     })
-                     .reduce((a, b) => a.concat(b), []);
-    this.userRowPadding -= alpha;
-  }
-
-  createCellObjects(array) {
+  static createCellObjects(array) {
     const cellObjects = {};
     let arrayPosition = 0;
     array.forEach((terrain, i, arr) => {
@@ -105,26 +115,33 @@ class Gameboard {
         cellObjects[cellObj.cellHash] = cellObj;
       });
     });
-    this.hashMap = cellObjects;
+    return cellObjects;
   }
 
-  getNextCells() {
-    Object.keys(this.hashMap).forEach(obj => this.updateCellinHashMap(obj));
+  static getNextCells(hashMap) {
+    const newHashMap = {};
+    Object.keys(hashMap)
+          .forEach(cell => newHashMap[cell] = hashMap[cell].getNextCellState(hashMap));
+    return newHashMap;
   }
 
-  updateCellinHashMap(id) {
-    this.hashMap[id] = this.hashMap[id].getNextCellState(this.hashMap);
-  }
-
-  getChangedCells() {
+  static getChangedCells(hashMap) {
     const changes = [];
-    Object.keys(this.hashMap).forEach((id) => {
-      if (this.hashMap[id].cellState !== this.hashMap[id].nextState) {
-        changes.push([this.hashMap[id].arrayPosition]);
+    Object.keys(hashMap).forEach((id) => {
+      if (hashMap[id].cellState !== hashMap[id].nextState) {
+        changes.push([hashMap[id].arrayPosition]);
       }
     });
     return changes;
   }
+
+  // // this function sends the updates to the array updater for processing
+  updateGameBoard() {
+    const hashMap = this.createHashMap();
+    Gameboard.getChangedCells(hashMap)
+             .forEach(cell => this.setCellArray(this.updateCellArray(cell)));
+  }
+
 }
 
 export default Gameboard;
