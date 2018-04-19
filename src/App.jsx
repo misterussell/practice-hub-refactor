@@ -1,5 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { configure } from "mobx";
+
+configure({ enforceActions: "strict" });
 
 import Routes from './Routes';
 
