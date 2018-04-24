@@ -10,12 +10,24 @@ class GridUI {
     return this.boardWidth;
   }
 
-  createGridTemplate(val) {
-    return Array.from(new Array(val), () => `${this.boardWidth / val}px`).join(' ');
+  createGridTemplate(rowCols) {
+    if (typeof rowCols !== 'number') {
+      throw new Error('Row/Col sizing can only be calculated when passed a number.');
+    } else if (rowCols < 0) {
+      throw new Error('RowCols cannot be a negative number.');
+    } else {
+      return Array.from(new Array(rowCols), () => `${this.boardWidth / rowCols}px`).join(' ');
+    }
   }
 
-  createCellHeight(val) {
-    return `${(this.boardWidth / val) - 5}px`;
+  createCellHeight(rows) {
+    if (typeof rows !== 'number') {
+      throw new Error('Cells height can only be calculated when passed a number.');
+    } else if (rows < 0) {
+      throw new Error('Rows cannot be a negative number.');
+    } else {
+      return `${(this.boardWidth / rows) - 5}px`;
+    }
   }
 }
 

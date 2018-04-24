@@ -37,6 +37,7 @@ Because I don't want to have to keep bootstrapping things to get back to my conf
 # Tools
 - simple-react-app
 - mobx/mobx-react
+- jest-extended: used for extended test cases that aren't included in Jest's defaults
 
 # Resources
 - [Best Practices for Stores](https://mobx.js.org/best/store.html)

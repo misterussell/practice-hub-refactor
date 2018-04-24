@@ -30,7 +30,6 @@ export default class Gameplay {
 
   @action setGameOver(state) {
     if (state === true) {
-      console.log('over');
       this.gameOver = true;
       this.updateState(!state);
     } else if (state === false) {
@@ -40,5 +39,6 @@ export default class Gameplay {
 
   suspend() {
     clearInterval(this.interval);
+    this.interval = null;
   }
 }

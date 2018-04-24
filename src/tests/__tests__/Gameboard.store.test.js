@@ -170,4 +170,33 @@ describe('The Gameboard class', () => {
     expect(gameboard.cells).toEqual(test);
   });
 
+  it('Should have a createToroidalArray method that takes no args and uses the class properties to return an array of arrays, such that each array.length is the sqrt of the totalRowLength', () => {
+    let test = [
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+    ];
+    expect(gameboard.createToroidalArray()).toEqual(test);
+    gameboard.setCellArray(gameboard.updateCellArray(0));
+    gameboard.setCellArray(gameboard.updateCellArray(4));
+    gameboard.setCellArray(gameboard.updateCellArray(20));
+    gameboard.setCellArray(gameboard.updateCellArray(24));
+    test = [
+      [1, 0, 0, 0, 1],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 1],
+    ];
+    expect(gameboard.createToroidalArray()).toEqual(test);
+  });
+
+  it('Should have a createHashMap method that has no arguments and returns an object of cells, with their next state', () => {
+    // this is broken needs to be explored
+    // expect(gameboard.createHashMap()).not.toBeObject;
+    // expect([]).toBeObject;
+  });
+
 });
