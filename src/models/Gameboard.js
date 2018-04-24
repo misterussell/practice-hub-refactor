@@ -13,7 +13,7 @@ class Gameboard {
 
   // unobserved settings
   minRowLength = 5;
-  userRowPadding = 0;
+  @observable userRowPadding = 0;
 
   // these functions are used to create the array required
   // to supply the view with the required props.
@@ -25,10 +25,6 @@ class Gameboard {
 
   @computed get totalRowLength() {
     return this.minRowLength + this.userRowPadding;
-  }
-
-  @computed get userGridAdjust() {
-    return this.userRowPadding;
   }
 
   @action newCellArray() {
@@ -43,39 +39,60 @@ class Gameboard {
 
   // // all changes to @observable cells should be made with this setter
   @action setCellArray(arr) {
-    this.cells = arr;
+    if (arr.length !== this.totalRowLength ** 2) {
+      throw new Error(`Expected ${this.totalRowLength} by ${this.totalRowLength} array but got ${Math.sqrt(arr.length)} by ${Math.sqrt(arr.length)} array.`);
+    } else this.cells = arr;
   }
 
   updateCellArray(i) {
-    const cells = [...this.cells];
-    const newCellVal = this.cells[i] === 0 ? 1 : 0;
-    cells[i] = newCellVal;
-    return cells;
+    if (typeof i !== 'number') {
+      throw new Error(`Expected a number but received ${typeof i}.`);
+    } else if (i > this.cells.length - 1 || i < 0) {
+      throw new Error(`Expected a number less than ${this.cells.length - 1} and greater than Zero.`);
+    } else {
+      const cells = [...this.cells];
+      const newCellVal = this.cells[i] === 0 ? 1 : 0;
+      cells[i] = newCellVal;
+      return cells;
+    }
   }
 
-  growCellArray(alpha) {
-    const newRow = Array.from(new Array(Math.sqrt(this.cellArrayLength) + alpha), () => 0);
-    const rowPadding = Array.from(new Array(alpha / 2), () => 0);
-    const updatedRows = this.createToroidalArray()
-                            .map(row => [...rowPadding, ...row, ...rowPadding]);
-    this.setCellArray(newRow.concat(...updatedRows, newRow));
-    this.userRowPadding += alpha;
+  @action growCellArray(alpha) {
+    if (typeof alpha !== 'number') {
+      throw new Error(`Expected a number but received ${typeof alpha}.`);
+    } else if (alpha < 0) {
+      throw new Error(`Expected a positive number but received ${alpha}.`);
+    } else {
+      const newRow = Array.from(new Array(Math.sqrt(this.cellArrayLength) + alpha), () => 0);
+      const rowPadding = Array.from(new Array(alpha / 2), () => 0);
+      const updatedRows = this.createToroidalArray()
+                              .map(row => [...rowPadding, ...row, ...rowPadding]);
+      const cells = newRow.concat(...updatedRows, newRow);
+      this.userRowPadding += alpha;
+      this.setCellArray(cells);
+    }
   }
 
-  shrinkCellArray(alpha) {
-    const cells = this.createToroidalArray()
-                     .map((row, i, arr) => row.slice((alpha / 2), (arr[i].length - (alpha / 2))))
-                     .filter((row, i, arr) => {
-                       if (i === 0) {
-                         return false;
-                       } else if (i === arr.length - (alpha / 2)) {
-                         return false;
-                       }
-                       return true;
-                     })
-                     .reduce((a, b) => a.concat(b), []);
-    this.setCellArray(cells);
-    this.userRowPadding -= alpha;
+  @action shrinkCellArray(alpha) {
+    if (typeof alpha !== 'number') {
+      throw new Error(`Expected a number but received ${typeof alpha}.`);
+    } else if (alpha < 0) {
+      throw new Error(`Expected a positive number but received ${alpha}.`);
+    } else {
+      const cells = this.createToroidalArray()
+                       .map((row, i, arr) => row.slice((alpha / 2), (arr[i].length - (alpha / 2))))
+                       .filter((row, i, arr) => {
+                         if (i === 0) {
+                           return false;
+                         } else if (i === arr.length - (alpha / 2)) {
+                           return false;
+                         }
+                         return true;
+                       })
+                       .reduce((a, b) => a.concat(b), []);
+      this.userRowPadding -= alpha;
+      this.setCellArray(cells);
+    }
   }
 
   createToroidalArray() {
@@ -138,8 +155,12 @@ class Gameboard {
   // // this function sends the updates to the array updater for processing
   updateGameBoard() {
     const hashMap = this.createHashMap();
-    Gameboard.getChangedCells(hashMap)
-             .forEach(cell => this.setCellArray(this.updateCellArray(cell)));
+    if (Gameboard.getChangedCells(hashMap).length === 0) {
+      this.rootStore.gameplay.setGameOver(true);
+    } else {
+      Gameboard.getChangedCells(hashMap)
+               .forEach(cell => this.setCellArray(this.updateCellArray(cell)));
+    }
   }
 
 }
