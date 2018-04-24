@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ButtonGroup, button } from 'react-bootstrap';
 import { observer } from 'mobx-react';
 
 import { Grid, Cell, Hero } from '../components';
@@ -80,8 +79,10 @@ import { Grid, Cell, Hero } from '../components';
   handleCellClick = (cell) => {
     const gameboard = this.props.store.rootStore.gameboard;
     const gameplay = this.props.store.rootStore.gameplay;
+    // if the game is over when a cell is clicked, remove the modal
+    const gameOver = gameplay.gameOverState === true ? gameplay.setGameOver(false) : null;
     // the ternary operator is placed here rather than in the onClick declaration because of the required props
-    gameplay.getState === false ? gameboard.setCellArray(gameboard.updateCellArray(cell)) : null;
+    const updatecell = gameplay.getState === false ? gameboard.setCellArray(gameboard.updateCellArray(cell)) : null;
   }
 
   handleGameState = (e) => {
@@ -89,24 +90,28 @@ import { Grid, Cell, Hero } from '../components';
     const rootStore = this.props.store.rootStore;
     const nextState = rootStore.gameplay.getState === true ? false : true;
     rootStore.gameplay.updateState(nextState);
+    rootStore.gameplay.gameOverState === true ? rootStore.gameplay.setGameOver(false) : null;
   }
 
   handleClear = (e) => {
     e.preventDefault();
     const rootStore = this.props.store.rootStore;
     rootStore.gameboard.setCellArray(rootStore.gameboard.newCellArray());
+    rootStore.gameplay.gameOverState === true ? rootStore.gameplay.setGameOver(false) : null;
   }
 
   handleGrow = (e) => {
     e.preventDefault()
     const rootStore = this.props.store.rootStore;
     rootStore.gameboard.userRowPadding < 7 ? rootStore.gameboard.growCellArray(2) : null;
+    rootStore.gameplay.gameOverState === true ? rootStore.gameplay.setGameOver(false) : null;
   }
 
   handleShrink = (e) => {
     e.preventDefault()
     const rootStore = this.props.store.rootStore;
     rootStore.gameboard.userRowPadding > 0 ? rootStore.gameboard.shrinkCellArray(2) : null;
+    rootStore.gameplay.gameOverState === true ? rootStore.gameplay.setGameOver(false) : null;
   }
 
   handleGameOver = (e) => {
