@@ -1,5 +1,29 @@
-.universe {
-  width: 100%;
+$color-primary-0: #A7286D;	// Main Primary color */
+$color-primary-1: #D472A8;
+$color-primary-2: #BA4685;
+$color-primary-3: #891353;
+$color-primary-4: #69013A;
+
+$color-secondary-1-0: #CF7231;	// Main Secondary color (1) */
+$color-secondary-1-1: #FFBA89;
+$color-secondary-1-2: #E69257;
+$color-secondary-1-3: #A95418;
+$color-secondary-1-4: #823601;
+
+$color-secondary-2-0: #1F8274;	// Main Secondary color (2) */
+$color-secondary-2-1: #5CABA0;
+$color-secondary-2-2: #379084;
+$color-secondary-2-3: #0F6A5E;
+$color-secondary-2-4: #015246;
+
+$color-complement-0: #8EC12E;	// Main Complement color */
+$color-complement-1: #C9EF81;
+$color-complement-2: #A8D651;
+$color-complement-3: #6F9D16;
+$color-complement-4: #507901;
+
+.game {
+  margin: 0 auto;
 }
 
 .life-board {
@@ -8,51 +32,39 @@
   padding-bottom: 10px;
 }
 
+.action-buttons {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: 100%;
+
+  .action-button {
+    width: 40%;
+    border: none;
+    background: $color-primary-1;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    align-self: stretch;
+  }
+
+  .action-button:nth-child(2n) {
+    background: $color-secondary-2-1;
+  };
+}
+
 .cell {
   border-radius: .5vw;
   margin-top: 2.5px;
   margin-left: 2.5px;
   margin-right: 2.5px;
-  background: aliceblue;
+  background: lighten($color-complement-1, 20%);
 }
 
 .cell.active {
-  background: #5E59E1;
+  background: $color-complement-0;
 }
 
 .hide {
   display: hide;
 }
-
-.action-buttons {
-  margin: 0 auto;
-  width: 500px;
-  padding-left: 55px;
-}
-
-/* CSS - Cascading Style Sheet */
-/* Palette color codes */
-/* Palette URL: http://paletton.com/#uid=53z0u0kdbYk00++72+hidUVmCOx */
-
-/* Feel free to copy&paste color codes to your application */
-
-
-/* As hex codes */
-
-.color-primary-0 { color: #99CBF7 }	/* Main Primary color */
-.color-primary-1 { color: #FFFFFF }
-.color-primary-2 { color: #C9E5FD }
-.color-primary-3 { color: #70B2EE }
-.color-primary-4 { color: #4C98DC }
-
-.color-secondary-1-0 { color: #A4A1F9 }	/* Main Secondary color (1) */
-.color-secondary-1-1 { color: #FFFFFF }
-.color-secondary-1-2 { color: #CFCEFD }
-.color-secondary-1-3 { color: #807BF0 }
-.color-secondary-1-4 { color: #5E59E1 }
-
-.color-secondary-2-0 { color: #92F8D1 }	/* Main Secondary color (2) */
-.color-secondary-2-1 { color: #FFFFFF }
-.color-secondary-2-2 { color: #C5FDE8 }
-.color-secondary-2-3 { color: #67EFBC }
-.color-secondary-2-4 { color: #41DFA3 }

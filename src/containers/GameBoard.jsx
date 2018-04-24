@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonGroup, Button } from 'react-bootstrap';
+import { ButtonGroup, button } from 'react-bootstrap';
 import { observer } from 'mobx-react';
 
 import { Grid, Cell, Hero } from '../components';
@@ -18,7 +18,12 @@ import { Grid, Cell, Hero } from '../components';
     const rootStore = this.props.store.rootStore;
     const hero = rootStore.gameplay.gameOverState ? <Hero /> : null;
     return (
-      <div className="game">
+      <div
+        className="game"
+        style={{
+          width: window.innerWidth > 800 ? 500 : window.innerWidth - 30
+        }}
+      >
         <Grid
           classname={'life-board'}
           width={rootStore.gridUI.width}
@@ -40,32 +45,30 @@ import { Grid, Cell, Hero } from '../components';
           }
         </Grid>
         <div className="action-buttons">
-          <ButtonGroup>
-            <Button
-              bsStyle="primary"
-              onClick={this.handleGameState}
-            >
-              { rootStore.gameplay.getState === true ? `Stop` : `Start` }
-            </Button>
-            <Button
-              bsStyle="primary"
-              onClick={ rootStore.gameplay.getState === false ? this.handleClear : null }
-            >
-              Clear
-            </Button>
-            <Button
-              bsStyle="primary"
-              onClick={ rootStore.gameplay.getState === false ? this.handleGrow : null }
-            >
-              Grow GameBoard
-            </Button>
-            <Button
-              bsStyle="primary"
-              onClick={ rootStore.gameplay.getState === false ? this.handleShrink : null }
-            >
-              Shrink Gameboard
-            </Button>
-          </ButtonGroup>
+          <button
+            className="action-button"
+            onClick={this.handleGameState}
+          >
+            { rootStore.gameplay.getState === true ? `Stop` : `Start` }
+          </button>
+          <button
+            className="action-button"
+            onClick={ rootStore.gameplay.getState === false ? this.handleClear : null }
+          >
+            Clear
+          </button>
+          <button
+            className="action-button"
+            onClick={ rootStore.gameplay.getState === false ? this.handleGrow : null }
+          >
+            + Cells
+          </button>
+          <button
+            className="action-button"
+            onClick={ rootStore.gameplay.getState === false ? this.handleShrink : null }
+          >
+            - Cells
+          </button>
         </div>
         {
           hero

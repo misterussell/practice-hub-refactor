@@ -159,7 +159,7 @@ class Gameboard {
       this.rootStore.gameplay.setGameOver(true);
     } else {
       Gameboard.getChangedCells(hashMap)
-               .forEach(cell => this.setCellArray(this.updateCellArray(cell)));
+               .forEach(cell => this.setCellArray(this.updateCellArray(...cell)));
     }
   }
 
