@@ -22,7 +22,7 @@ describe('The Cell factory should:', () => {
     expect(cell).not.toHaveProperty('nextState')
   });
 
-  it('should compute a nextState when passed a gameboard', () => {
+  it('should compute a nextState when passed a gameboard to reference neighbors from', () => {
     const cell = Cell(1, 1, 0, [5, 5], 0);
   });
 });

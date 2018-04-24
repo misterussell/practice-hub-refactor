@@ -91,19 +91,19 @@ import { Grid, Cell, Hero } from '../components';
   handleClear = (e) => {
     e.preventDefault();
     const rootStore = this.props.store.rootStore;
-    rootStore.gameboard.newCellArray();
+    rootStore.gameboard.setCellArray(rootStore.gameboard.newCellArray());
   }
 
   handleGrow = (e) => {
     e.preventDefault()
     const rootStore = this.props.store.rootStore;
-    rootStore.gameboard.userGridAdjust < 7 ? rootStore.gameboard.growCellArray(2) : null;
+    rootStore.gameboard.userRowPadding < 7 ? rootStore.gameboard.growCellArray(2) : null;
   }
 
   handleShrink = (e) => {
     e.preventDefault()
     const rootStore = this.props.store.rootStore;
-    rootStore.gameboard.userGridAdjust > 0 ? rootStore.gameboard.shrinkCellArray(2) : null;
+    rootStore.gameboard.userRowPadding > 0 ? rootStore.gameboard.shrinkCellArray(2) : null;
   }
 
   handleGameOver = (e) => {
