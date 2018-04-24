@@ -3,7 +3,7 @@ class GridUI {
 
   constructor(rootStore) {
     this.rootStore = rootStore;
-    this.boardWidth = 500;
+    this.boardWidth = window.innerWidth > 800 ? 500 : window.innerWidth - 30;
   }
 
   get width() {
