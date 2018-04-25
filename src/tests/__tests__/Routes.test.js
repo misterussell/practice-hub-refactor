@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import Routes from './../../Routes';
-import { Navigation, Home, GameBoard, RouteNotFound } from './../../containers';
+import { Navigation, Home, Gameboard, RouteNotFound } from './../../containers';
 
 import Store from '../../Store';
 
@@ -42,6 +42,6 @@ test('/gameOfLife path should redirect to GameBoard component', () => {
       <Navigation />
     </MemoryRouter>,
   );
-  expect(wrapper.find(GameBoard)).toHaveLength(1);
+  expect(wrapper.find(Gameboard)).toHaveLength(1);
   expect(wrapper.find(Home)).toHaveLength(0);
 });

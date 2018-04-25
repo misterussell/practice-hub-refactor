@@ -199,4 +199,10 @@ describe('The Gameboard class', () => {
     // expect([]).toBeObject;
   });
 
+  it('Should have a lastGrid property that defaults as null', () => {
+    expect(gameboard.lastGame).toBeNull();
+    gameboard.saveLastGame();
+    expect(gameboard.lastGame).toEqual(gameboard.cells);
+  });
+
 });

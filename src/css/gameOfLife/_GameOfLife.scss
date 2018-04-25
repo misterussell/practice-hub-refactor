@@ -59,12 +59,12 @@ $color-complement-4: #507901;
   margin-left: 2.5px;
   margin-right: 2.5px;
   background: lighten($color-complement-1, 20%);
-  transition: background-color 100ms;
+  // transition: background-color 100ms;
 }
 
 .cell.active {
   background: $color-complement-0;
-  transition: background-color 100ms;
+  // transition: background-color 100ms;
 }
 
 .hide {
@@ -73,12 +73,11 @@ $color-complement-4: #507901;
 
 .gameover-modal {
   width: 100%;
+  font-family: 'Roboto', sans-serif;
   background: $color-primary-1;
-  height: 20vh;
 }
 
 .modal-title {
-  font-family: 'Roboto', sans-serif;
   margin: 0 auto;
   padding-left: 15%;
   padding-bottom: 2%;
@@ -86,7 +85,6 @@ $color-complement-4: #507901;
 }
 
 .modal-text {
-  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
   border: .75rem solid;
   width: 60%;

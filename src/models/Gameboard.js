@@ -11,9 +11,12 @@ class Gameboard {
   // grid observer
   @observable cells = [];
 
-  // unobserved settings
+  // cell configuration settings
   minRowLength = 5;
   @observable userRowPadding = 0;
+
+  // prior configuration/default options
+  lastGame = null;
 
   // these functions are used to create the array required
   // to supply the view with the required props.
@@ -161,6 +164,14 @@ class Gameboard {
       Gameboard.getChangedCells(hashMap)
                .forEach(cell => this.setCellArray(this.updateCellArray(...cell)));
     }
+  }
+
+  saveGame(arr) {
+    this.lastGame = [...arr];
+  }
+
+  replay() {
+    this.setCellArray(this.lastGame);
   }
 
 }
