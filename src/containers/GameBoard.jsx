@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-
+import {
+  TransitionGroup,
+  CSSTransition
+} from 'react-transition-group';
 import { Grid, Cell, Hero } from '../components';
 
 @observer class GameBoard extends Component {
@@ -15,7 +18,7 @@ import { Grid, Cell, Hero } from '../components';
 
   render() {
     const rootStore = this.props.store.rootStore;
-    const hero = rootStore.gameplay.gameOverState ? <Hero /> : null;
+    const hero = rootStore.gameplay.gameOverState ? <Hero callback={this.handleReplay}/> : <div></div>;
     return (
       <div
         className="game"
@@ -69,9 +72,17 @@ import { Grid, Cell, Hero } from '../components';
             - Cells
           </button>
         </div>
-        {
-          hero
-        }
+          <CSSTransition
+            key={0}
+            in={rootStore.gameplay.gameOverState}
+            timeout={300}
+            classNames="fade"
+            unmountOnExit
+          >
+            {
+              hero
+            }
+          </CSSTransition>
       </div>
     );
   }
@@ -89,8 +100,8 @@ import { Grid, Cell, Hero } from '../components';
     e.preventDefault();
     const rootStore = this.props.store.rootStore;
     const nextState = rootStore.gameplay.getState === true ? false : true;
+    const saveGame = nextState === true ? rootStore.gameboard.saveGame(rootStore.gameboard.cells) : null;
     rootStore.gameplay.updateState(nextState);
-    rootStore.gameplay.gameOverState === true ? rootStore.gameplay.setGameOver(false) : null;
   }
 
   handleClear = (e) => {
@@ -103,7 +114,7 @@ import { Grid, Cell, Hero } from '../components';
   handleGrow = (e) => {
     e.preventDefault()
     const rootStore = this.props.store.rootStore;
-    rootStore.gameboard.userRowPadding < 7 ? rootStore.gameboard.growCellArray(2) : null;
+    rootStore.gameboard.userRowPadding < 13 ? rootStore.gameboard.growCellArray(2) : null;
     rootStore.gameplay.gameOverState === true ? rootStore.gameplay.setGameOver(false) : null;
   }
 
@@ -118,6 +129,11 @@ import { Grid, Cell, Hero } from '../components';
     e.preventDefault();
     const rootStore = this.props.store.rootStore;
     rootStore.gameplay.setGameOver(true);
+  }
+
+  handleReplay = () => {
+    const rootStore = this.props.store.rootStore;
+    rootStore.gameboard.replay();
   }
 }
 

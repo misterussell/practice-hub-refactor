@@ -154,7 +154,7 @@ describe('The Gameboard class', () => {
   });
 
   it('Should persist the relative location of cells when shrinking the size of the array', () => {
-    const test = [
+    const subTest = [
       1, 0, 0, 0, 1,
       0, 0, 0, 0, 0,
       0, 0, 0, 0, 0,
@@ -167,30 +167,30 @@ describe('The Gameboard class', () => {
     gameboard.setCellArray(gameboard.updateCellArray(24));
     gameboard.growCellArray(2);
     gameboard.shrinkCellArray(2);
-    expect(gameboard.cells).toEqual(test);
+    expect(gameboard.cells).toEqual(subTest);
   });
 
   it('Should have a createToroidalArray method that takes no args and uses the class properties to return an array of arrays, such that each array.length is the sqrt of the totalRowLength', () => {
-    let test = [
+    let subTest = [
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
     ];
-    expect(gameboard.createToroidalArray()).toEqual(test);
+    expect(gameboard.createToroidalArray()).toEqual(subTest);
     gameboard.setCellArray(gameboard.updateCellArray(0));
     gameboard.setCellArray(gameboard.updateCellArray(4));
     gameboard.setCellArray(gameboard.updateCellArray(20));
     gameboard.setCellArray(gameboard.updateCellArray(24));
-    test = [
+    subTest = [
       [1, 0, 0, 0, 1],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [1, 0, 0, 0, 1],
     ];
-    expect(gameboard.createToroidalArray()).toEqual(test);
+    expect(gameboard.createToroidalArray()).toEqual(subTest);
   });
 
   it('Should have a createHashMap method that has no arguments and returns an object of cells, with their next state', () => {
@@ -199,4 +199,26 @@ describe('The Gameboard class', () => {
     // expect([]).toBeObject;
   });
 
+  it('Should have a lastGame property that defaults as null', () => {
+    expect(gameboard.lastGame).toBeNull();
+  });
+
+  it('Should have a saveGame method that accepts an array and updates lastGame', () => {
+    const subTest = [
+      1, 0, 0, 0, 1,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      1, 0, 0, 0, 1,
+    ];
+    gameboard.setCellArray(gameboard.updateCellArray(0));
+    gameboard.setCellArray(gameboard.updateCellArray(4));
+    gameboard.setCellArray(gameboard.updateCellArray(20));
+    gameboard.setCellArray(gameboard.updateCellArray(24));
+    gameboard.saveGame(gameboard.cells);
+    expect(gameboard.lastGame).toEqual(subTest);
+    gameboard.setCellArray(gameboard.updateCellArray(0));
+    gameboard.replay();
+    expect(gameboard.cells).toEqual(subTest);
+  });
 });

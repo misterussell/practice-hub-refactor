@@ -33,6 +33,8 @@ Because I don't want to have to keep bootstrapping things to get back to my conf
 "react-hot-loader/babel",
 "babel-plugin-transform-object-rest-spread"
 ```
+- npm install --save-dev recharts
+- npm install --save-dev react-css-transition
 
 # Tools
 - simple-react-app

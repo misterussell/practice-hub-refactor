@@ -23,7 +23,9 @@ export default class Gameplay {
       this.gameState = false;
       this.suspend();
     } else if (state === true) {
+      this.gameOver = false;
       this.gameState = true;
+      // this.rootStore.gameboard.saveGame(this.rootStore.gameboard.cells);
       this.interval = setInterval(() => this.rootStore.gameboard.updateGameBoard(), 300);
     }
   }

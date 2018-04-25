@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import Routes from './../../Routes';
-import { Navigation, Home, GameBoard, RouteNotFound } from './../../containers';
+import { Navigation, Home, Gamezone, RouteNotFound } from './../../containers';
 
 import Store from '../../Store';
 
@@ -33,7 +33,7 @@ test('invalid path should redirect to 404', () => {
   expect(wrapper.find(RouteNotFound)).toHaveLength(1);
 });
 
-test('/gameOfLife path should redirect to GameBoard component', () => {
+test('/gameOfLife path should redirect to Gamezone component', () => {
   const wrapper = mount(
     <MemoryRouter
       initialEntries={['/','/gameOfLife']}
@@ -42,6 +42,6 @@ test('/gameOfLife path should redirect to GameBoard component', () => {
       <Navigation />
     </MemoryRouter>,
   );
-  expect(wrapper.find(GameBoard)).toHaveLength(1);
+  expect(wrapper.find(Gamezone)).toHaveLength(1);
   expect(wrapper.find(Home)).toHaveLength(0);
 });

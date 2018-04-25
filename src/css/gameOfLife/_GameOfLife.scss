@@ -55,14 +55,16 @@ $color-complement-4: #507901;
 
 .cell {
   border-radius: .5vw;
-  margin-top: 2.5px;
-  margin-left: 2.5px;
-  margin-right: 2.5px;
+  margin-top: 1px;
+  margin-left: 1px;
+  margin-right: 1px;
   background: lighten($color-complement-1, 20%);
+  // transition: background-color 100ms;
 }
 
 .cell.active {
   background: $color-complement-0;
+  // transition: background-color 100ms;
 }
 
 .hide {
@@ -70,24 +72,19 @@ $color-complement-4: #507901;
 }
 
 .gameover-modal {
-  width: 100%;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
   background: $color-primary-1;
-  height: 20vh;
+  padding: 20px;
 }
 
-.modal-title {
-  font-family: 'Roboto', sans-serif;
-  margin: 0 auto;
-  padding-left: 15%;
-  padding-bottom: 2%;
-  padding-top: 5%;
+.gameover-modal .modal-title {
+  flex: 0 1 auto;
 }
 
-.modal-text {
-  font-family: 'Roboto', sans-serif;
-  box-sizing: border-box;
-  border: 1rem solid;
-  width: 60%;
-  margin-left: 20%;
-  padding: 1.5%;
+.gamover-modal .modal-text {
+  flex: 1;
+  margin-left: 100px;
 }
