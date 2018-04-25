@@ -100,6 +100,7 @@ import { Grid, Cell, Hero } from '../components';
     e.preventDefault();
     const rootStore = this.props.store.rootStore;
     const nextState = rootStore.gameplay.getState === true ? false : true;
+    const saveGame = nextState === true ? rootStore.gameboard.saveGame(rootStore.gameboard.cells) : null;
     rootStore.gameplay.updateState(nextState);
   }
 
