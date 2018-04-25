@@ -114,7 +114,7 @@ import { Grid, Cell, Hero } from '../components';
   handleGrow = (e) => {
     e.preventDefault()
     const rootStore = this.props.store.rootStore;
-    rootStore.gameboard.userRowPadding < 7 ? rootStore.gameboard.growCellArray(2) : null;
+    rootStore.gameboard.userRowPadding < 13 ? rootStore.gameboard.growCellArray(2) : null;
     rootStore.gameplay.gameOverState === true ? rootStore.gameplay.setGameOver(false) : null;
   }
 
