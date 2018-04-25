@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-
+import {
+  TransitionGroup,
+  CSSTransition
+} from 'react-transition-group';
 import { Grid, Cell, Hero } from '../components';
 
 @observer class GameBoard extends Component {
@@ -15,7 +18,7 @@ import { Grid, Cell, Hero } from '../components';
 
   render() {
     const rootStore = this.props.store.rootStore;
-    const hero = rootStore.gameplay.gameOverState ? <Hero /> : null;
+    const hero = rootStore.gameplay.gameOverState ? <Hero /> : <div></div>;
     return (
       <div
         className="game"
@@ -69,9 +72,17 @@ import { Grid, Cell, Hero } from '../components';
             - Cells
           </button>
         </div>
-        {
-          hero
-        }
+          <CSSTransition
+            key={0}
+            in={rootStore.gameplay.gameOverState}
+            timeout={300}
+            classNames="fade"
+            unmountOnExit
+          >
+            {
+              hero
+            }
+          </CSSTransition>
       </div>
     );
   }

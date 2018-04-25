@@ -59,10 +59,12 @@ $color-complement-4: #507901;
   margin-left: 2.5px;
   margin-right: 2.5px;
   background: lighten($color-complement-1, 20%);
+  transition: background-color 100ms;
 }
 
 .cell.active {
   background: $color-complement-0;
+  transition: background-color 100ms;
 }
 
 .hide {
@@ -86,7 +88,7 @@ $color-complement-4: #507901;
 .modal-text {
   font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
-  border: 1rem solid;
+  border: .75rem solid;
   width: 60%;
   margin-left: 20%;
   padding: 1.5%;
