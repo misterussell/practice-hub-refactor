@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
+// this function is almost identical to my toroidal array/cell generator
+// I should be able to send the hashMap through this rather than the single
+// flat array
 function gridData() {
   let data = new Array();
   let xpos = 1;
   let ypos = 1;
   let width = 50;
   let height = 50;
+  let index = 0;
 
   for (let row = 0; row < 10; row++) {
     data.push(new Array());
@@ -18,8 +22,10 @@ function gridData() {
         width,
         height,
         active: false,
+        index
       });
       xpos += width;
+      index += 1;
     };
     xpos = 1;
     ypos += height;
@@ -58,7 +64,7 @@ class BasicD3Grid extends Component {
                     .on('click', d => {
                       d3.event.preventDefault();
                       d3.event.stopPropagation();
-                      console.log('clicked')
+                      this.handleClick(d.index);
                     });
   }
 
@@ -70,6 +76,10 @@ class BasicD3Grid extends Component {
         style={{  height: '510px', width: '510px' }}
       />
     );
+  }
+
+  handleClick = (index) => {
+    console.log('clicked' + index);
   }
 }
 
