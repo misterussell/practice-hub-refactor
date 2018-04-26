@@ -24,9 +24,9 @@ const Navigation = props => (
               Game Of Life
             </NavItem>
           </LinkContainer>
-          <LinkContainer to="/fooBar">
+          <LinkContainer to="/d3">
             <NavItem eventKey={2}>
-              Foo Bar
+              D3 Grid
             </NavItem>
           </LinkContainer>
         </Nav>
