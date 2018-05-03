@@ -9,7 +9,7 @@ const Routes = () => (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route path="/gameOfLife" render={() => <Gamezone store={Store}/>} />
-    <Route path="/d3" render={() => <BasicD3Grid />} />
+    <Route path="/d3" render={() => <BasicD3Grid store={Store}/>} />
     <Route component={RouteNotFound} />
   </Switch>
 );
