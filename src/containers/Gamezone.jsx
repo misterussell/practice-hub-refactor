@@ -4,8 +4,8 @@ import { PrebuiltGridSelector } from '../components';
 
 const Gamezone = (props) => (
   <div className="game-zone">
-    <PrebuiltGridSelector store={props.store}/>
     <Gameboard store={props.store} />
+    <PrebuiltGridSelector store={props.store}/>
   </div>
 );
 

@@ -124,7 +124,7 @@ export default [
   },
   {
     type: 'gliders',
-    config: [
+    configs: [
       {
         name: 'Right Glider',
         config: [

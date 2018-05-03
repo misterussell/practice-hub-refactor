@@ -4,7 +4,6 @@ class ObjectGameboard {
   constructor(rootStore) {
     this.rootStore = rootStore;
     this.createBoard();
-    console.log(this.cells);
   }
 
   @observable cells = [];
