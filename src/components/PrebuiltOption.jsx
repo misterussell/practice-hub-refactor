@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 
 const PrebuiltOption = (props) => {
   return (
-    <div>
-      Option to go here.
+    <div className="prebuilt-option">
+      <h3 className="prebuilt-subheader">
+        { props.config.name }
+      </h3>
+
     </div>
   )
 };
