@@ -29,7 +29,10 @@ import { Grid, Cell, Hero } from '../components';
         <Grid
           classname={'life-board'}
           width={rootStore.gridUI.width}
-          gridTemplate={rootStore.gridUI.createGridTemplate(Math.sqrt(rootStore.gameboard.cellArrayLength))}
+          gridTemplate={{
+            cols: rootStore.gridUI.createGridTemplate(Math.sqrt(rootStore.gameboard.cellArrayLength)),
+            rows: rootStore.gridUI.createGridTemplate(Math.sqrt(rootStore.gameboard.cellArrayLength)),
+          }}
         >
           {
             rootStore.gameboard.cells.map((cell, i) => (

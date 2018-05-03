@@ -6,8 +6,8 @@ const Grid = props => (
     className={props.classname}
     style={{
       width: props.width,
-      gridTemplateColumns: `${props.gridTemplate}`,
-      gridTemplateRows: `${props.gridTemplate}`,
+      gridTemplateColumns: `${props.gridTemplate.cols}`,
+      gridTemplateRows: `${props.gridTemplate.rows}`,
     }}
   >
     {
@@ -19,7 +19,10 @@ const Grid = props => (
 Grid.propTypes = {
   classname: PropTypes.string.isRequired,
   children: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  gridTemplate: PropTypes.string.isRequired,
+  gridTemplate: PropTypes.shape({
+    cols: PropTypes.string.isRequired,
+    rows: PropTypes.string.isRequired,
+  }).isRequired,
   width: PropTypes.number.isRequired,
 }
 

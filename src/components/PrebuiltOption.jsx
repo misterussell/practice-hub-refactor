@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PrebuiltPreview from './'
 
 const PrebuiltOption = (props) => {
   return (
-    <div className="prebuilt-option">
-      { props.prebuilt.type }
-      {
-        props.prebuilt.configs.map((option, i) => <PrebuiltPreview key={i} />)
-      }
+    <div>
+      Option to go here.
     </div>
   )
 };
 
 PrebuiltOption.propTypes = {
-  prebuilt: PropTypes.shape({}).isRequired,
+  config: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    config: PropTypes.arrayOf(PropTypes.number).isRequired,
+    rowLength: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default PrebuiltOption;
