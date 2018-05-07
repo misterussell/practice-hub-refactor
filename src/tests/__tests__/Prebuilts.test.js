@@ -31,6 +31,8 @@ describe('The prebuilt class', () => {
     expect(prebuilts.rowPadding).toEqual([18, 18]);
     prebuilts.getRowPadding(6, 43);
     expect(prebuilts.rowPadding).toEqual([19, 18]);
+    prebuilts.getRowPadding(2, 3);
+    expect(prebuilts.rowPadding).toEqual([1, 0]);
   });
 
   it('Should throw an error if getRowPadding is not passed the correct params num, num', () => {
@@ -58,7 +60,7 @@ describe('The prebuilt class', () => {
   });
 
   it('Should have a method getColHeight that returns the height of the columns based on the array', () => {
-    expect(Prebuilts.getColHeight(prebuiltTest, rowLength)).toEqual(4);
+    expect(Prebuilts.getColHeight(prebuiltTest.length, rowLength)).toEqual(4);
     prebuiltTest = [
       0, 0, 0, 0, 0, 0,
       0, 0, 1, 1, 0, 0,
@@ -67,7 +69,7 @@ describe('The prebuilt class', () => {
       0, 0, 0, 1, 0, 0,
       0, 0, 0, 0, 0, 0,
     ];
-    expect(Prebuilts.getColHeight(prebuiltTest, 6)).toEqual(6);
+    expect(Prebuilts.getColHeight(prebuiltTest.length, 6)).toEqual(6);
     prebuiltTest =  [
       0, 0, 0, 0, 0, 0,
       0, 0, 1, 1, 0, 0,
@@ -75,6 +77,55 @@ describe('The prebuilt class', () => {
       0, 0, 1, 1, 0, 0,
       0, 0, 0, 0, 0, 0,
     ];
-    expect(Prebuilts.getColHeight(prebuiltTest, 6)).toEqual(5);
+    expect(Prebuilts.getColHeight(prebuiltTest.length, 6)).toEqual(5);
   });
+
+  it('Should throw an error if getColHeight is passed anything other than params num, num', () => {
+    expect(() => {
+      Prebuilts.getColHeight({foo: 'bar'}, 2);
+    }).toThrow();
+    expect(() => {
+      Prebuilts.getColHeight('foo', 2);
+    }).toThrow();
+    expect(() => {
+      Prebuilts.getColHeight([1, 2, 3], 2);
+    }).toThrow();
+    expect(() => {
+      Prebuilts.getColHeight(2, 'foo');
+    }).toThrow();
+    expect(() => {
+      Prebuilts.getColHeight(2, {foo: 'bar'});
+    }).toThrow();
+    expect(() => {
+      Prebuilts.getColHeight(2, [1, 2, 3]);
+    }).toThrow();
+  });
+
+  it('Should have a method getColPadding that takes an array length, a rowLength, and a maxHeight that calculates the height of the columns.', () => {
+    prebuilts.getColPadding(36, 6, 7);
+    expect(prebuilts.colPadding).toEqual([1, 0]);
+    prebuilts.getColPadding(36, 6, 6);
+    expect(prebuilts.colPadding).toEqual([0, 0]);
+  });
+
+  it('Should throw an error if getColPadding is passed anything but three num params', () => {
+    expect(() => {
+      prebuilts.getColPadding([1, 3], 2, 3);
+    }).toThrow();
+    expect(() => {
+      prebuilts.getColPadding(1, [1, 2, 3], 3);
+    }).toThrow();
+    expect(() => {
+      prebuilts.getColPadding(1, 2, [1, 2, 3]);
+    }).toThrow();
+    expect(() => {
+      prebuilts.getColPadding();
+    }).toThrow();
+    expect(() => {
+      prebuilts.getColPadding({ foo: 'bar' });
+    }).toThrow();
+    expect(() => {
+      prebuilts.getColPadding(1, 2);
+    }).toThrow();
+  })
 });
