@@ -9,7 +9,16 @@ const PrebuiltCategory = (props) => {
         { props.prebuilt.type }
       </h2>
       {
-        props.prebuilt.configs.map((config, i) => <PrebuiltOption key={i} config={config} />)
+        props.prebuilt.configs.map((config, i) => {
+          return (
+            <PrebuiltOption
+              key={i}
+              config={config}
+              gridUI={props.gridUI}
+              gameboard={props.gameboard}
+            />
+          )
+        })
       }
     </div>
   )
@@ -20,6 +29,7 @@ PrebuiltCategory.propTypes = {
     type: PropTypes.string.isRequired,
     configs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   }).isRequired,
+  gridUI: PropTypes.shape({}),
 }
 
 export default PrebuiltCategory;

@@ -1,13 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ConfigPreview } from './';
 
 const PrebuiltOption = (props) => {
+  const handleClick = () => {
+    console.log('click');
+  }
   return (
-    <div className="prebuilt-option">
+    <div
+      className="prebuilt-option"
+      onClick={handleClick}
+    >
       <h3 className="prebuilt-subheader">
         { props.config.name }
       </h3>
-
+      <ConfigPreview
+        config={props.config.config}
+        rowLength={props.config.rowLength}
+        gridUI={props.gridUI}
+        gameboard={props.gameboard}
+      />
     </div>
   )
 };
@@ -18,6 +30,7 @@ PrebuiltOption.propTypes = {
     config: PropTypes.arrayOf(PropTypes.number).isRequired,
     rowLength: PropTypes.number.isRequired,
   }).isRequired,
+  gridUI: PropTypes.shape({}),
 }
 
 export default PrebuiltOption;

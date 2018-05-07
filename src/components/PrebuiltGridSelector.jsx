@@ -9,7 +9,16 @@ const PrebuiltGridSelector = (props) => {
         Prebuilt Grid Elements
         </h1>
         {
-          props.store.prebuilts.map((prebuilt, i) => <PrebuiltCategory key={i} prebuilt={prebuilt}/>)
+          props.store.prebuilts.map((prebuilt, i) => {
+            return (
+              <PrebuiltCategory
+                key={i}
+                prebuilt={prebuilt}
+                gridUI={props.store.rootStore.gridUI}
+                gameboard={props.store.rootStore.gameboard}
+              />
+            )
+          })
         }
     </div>
   );

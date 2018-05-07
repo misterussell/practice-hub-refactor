@@ -1,7 +1,6 @@
 import Gameboard from '../../models/Gameboard';
 
 describe('The Gameboard class', () => {
-
   let gameboard;
   let gameboardRef;
   let gameboardRefMutated;
