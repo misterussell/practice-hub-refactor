@@ -9,7 +9,16 @@ const PrebuiltCategory = (props) => {
         { props.prebuilt.type }
       </h2>
       {
-        props.prebuilt.configs.map((config, i) => <PrebuiltOption key={i} config={config} gridUI={props.gridUI}/>)
+        props.prebuilt.configs.map((config, i) => {
+          return (
+            <PrebuiltOption
+              key={i}
+              config={config}
+              gridUI={props.gridUI}
+              gameboard={props.gameboard}
+            />
+          )
+        })
       }
     </div>
   )

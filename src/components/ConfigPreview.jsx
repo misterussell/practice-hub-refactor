@@ -8,10 +8,8 @@ const ConfigPreview = (props) => {
       classname={'preview-grid'}
       width={100}
       gridTemplate={{
-        // cols: props.gridUI.createGridTemplate(props.rowLength, 100),
-        // rows: props.gridUi.createGridTemplate(props.rowLength, 100),
-        cols: '20px 20px 20px',
-        rows: '20px 20px 20px'
+        cols: props.gridUI.createGridTemplate(props.rowLength, 100),
+        rows: props.gridUI.createGridTemplate(props.rowLength, 100),
       }}
     >
       {
@@ -23,7 +21,8 @@ const ConfigPreview = (props) => {
              className={classname}
              style={{
                height: '10px'
-             }}>
+             }}
+            >
               <span className="hide">
                 {
                   props.cell
