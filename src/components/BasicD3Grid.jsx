@@ -14,8 +14,8 @@ import * as d3 from 'd3';
   componentDidMount() {
     let grid = d3.select(this.svg)
                   .append('g')
-                  .attr('width', '510px')
-                  .attr('height', '510px');
+                  .attr('width', '110px')
+                  .attr('height', '110px');
 
     let row = grid.selectAll('.row')
                   .data(this.props.store.rootStore.objectGameboard.cells)
@@ -28,8 +28,8 @@ import * as d3 from 'd3';
                     .attr('class', 'square')
                     .attr('x', d => d.x)
                     .attr('y', d => d.y)
-                    .attr('width', 50)
-                    .attr('height', 50)
+                    .attr('width', 10)
+                    .attr('height', 10)
                     .style('fill', d => d.fill)
                     .style('stroke', '#222')
                     .on('click', d => {

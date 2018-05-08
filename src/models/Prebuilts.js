@@ -112,9 +112,9 @@ export default class Prebuilts {
     const paddedRows = this.padRows(arr, rowLength, squareDimension);
     const newRowLength = paddedRows[0].length;
     const top = Array(this.colPadding[0]).fill([])
-                                            .map(subArr => Array(newRowLength).fill(0));
+                                            .map(() => Array(newRowLength).fill(0));
     const bottom = Array(this.colPadding[1]).fill([])
-                                               .map(subArr => Array(newRowLength).fill(0));
+                                               .map(() => Array(newRowLength).fill(0));
     return [...top, ...paddedRows, ...bottom].reduce((a, b) =>  a.concat(b), []);
   }
 }

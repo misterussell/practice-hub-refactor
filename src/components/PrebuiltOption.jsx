@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ConfigPreview } from './';
+import Prebuilts from '../models/Prebuilts';
+
+const prebuilts = new Prebuilts();
 
 const PrebuiltOption = (props) => {
   const handleClick = () => {
@@ -18,7 +21,6 @@ const PrebuiltOption = (props) => {
         config={props.config.config}
         rowLength={props.config.rowLength}
         gridUI={props.gridUI}
-        gameboard={props.gameboard}
       />
     </div>
   )
