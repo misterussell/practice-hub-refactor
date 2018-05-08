@@ -12,12 +12,32 @@ export default class Prebuilts {
   }
 
   static findPadding(a, b) {
-    const isEven = Prebuilts.isEven(a);
-    const alpha = b - a;
-    if (isEven) {
-      return [((alpha - 1) / 2) + 1, ((alpha - 1) / 2)];
+    if (a >= b) {
+      throw new Error('Param a cannot be greater than or equal b. These should be handled by the originating function.');
+    } else {
+      const isEven = Prebuilts.isEven(a);
+      const alpha = b - a;
+      if (isEven) {
+        return [((alpha - 1) / 2) + 1, ((alpha - 1) / 2)];
+      }
+      return [(b - a) / 2, (b - a) / 2];
     }
-    return [(b - a) / 2, (b - a) / 2];
+  }
+
+  static createStackedArray(arr, rowLength) {
+    if ((arr.length / rowLength) % 1 !== 0) {
+      throw new Error('Array to convert is not a multiple of rowLength, thus not a complete prebuilt.');
+    } else if (rowLength === undefined) {
+      throw new Error('Param rowLength is required.');
+    } else if (typeof rowLength !== 'number') {
+      throw new Error('Param rowLength must be a number.');
+    } else {
+      const stackedArr = [];
+      for (let i = 0; i < arr.length; i += rowLength) {
+        stackedArr.push(arr.slice(i, i + rowLength));
+      }
+      return stackedArr;
+    }
   }
 
   static getColHeight(arrLength, rowLength) {
@@ -36,9 +56,9 @@ export default class Prebuilts {
   }
 
   getColPadding(arrLength, rowLength, maxHeight) {
-    let colHeight = Prebuilts.getColHeight(arrLength, rowLength);
-    let colPadding = [0, 0];
+    const colHeight = Prebuilts.getColHeight(arrLength, rowLength);
     const alpha = maxHeight - colHeight;
+    let colPadding = [0, 0];
 
     if (!arrLength || typeof arrLength !== 'number') {
       throw new Error(`Expected arrLength param to be a number but received ${typeof arrLength + arrLength}.`);
@@ -61,13 +81,13 @@ export default class Prebuilts {
     const alpha = maxLength - rowLength;
 
     if (rowLength > maxLength) {
-      throw new Error(`This prebuilt is too large. Expected row length <= ${maxLength}`);
+      throw new Error(`This prebuilt is too large. Expected row length <= ${maxLength}.`);
     } else if (rowLength <= 0 || maxLength <= 0) {
-      throw new Error(`Expected rowLength and maxLength >= 0, received rowLength:${rowLength}, maxLength:${maxLength}`);
+      throw new Error(`Expected rowLength and maxLength >= 0, received rowLength:${rowLength}, maxLength:${maxLength}.`);
     } else if (typeof rowLength !== 'number') {
-      throw new Error(`Expected rowLength to be a number but received ${typeof rowLength}`);
+      throw new Error(`Expected rowLength to be a number but received ${typeof rowLength}.`);
     } else if (typeof maxLength !== 'number') {
-      throw new Error(`Expected maxLength to be a number but received ${typeof maxLength}`);
+      throw new Error(`Expected maxLength to be a number but received ${typeof maxLength}.`);
     } else {
       if (alpha > 1) {
         rowPadding = Prebuilts.findPadding(rowLength, maxLength);
@@ -76,5 +96,14 @@ export default class Prebuilts {
       }
       this.rowPadding = rowPadding;
     }
+  }
+
+  padRows(arr, rowLength, squareDimension) {
+    this.getRowPadding(rowLength, squareDimension);
+    return [...Prebuilts.createStackedArray(arr, rowLength)].map((row) => {
+      const left = new Array(this.rowPadding[0]).fill(0);
+      const right = new Array(this.rowPadding[1]).fill(0);
+      return [...left, ...row, ...right];
+    });
   }
 }
