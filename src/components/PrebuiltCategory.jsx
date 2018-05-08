@@ -17,28 +17,29 @@ import { PrebuiltOption } from './';
         </h2>
         {
           this.props.prebuilt.configs.filter(config => config.rowLength <= this.props.gameboard.totalRowLength)
-                                .map((config, i) => {
-                                  return (
-                                    <PrebuiltOption
-                                      key={i}
-                                      config={config}
-                                      gridUI={this.props.gridUI}
-                                    />
-                                  )
-                                })
+                                     .map((config, i) => {
+                                       return (
+                                         <PrebuiltOption
+                                           key={i}
+                                           config={config}
+                                           gridUI={this.props.gridUI}
+                                           gameboard={this.props.gameboard}
+                                         />
+                                       )
+                                     })
         }
       </div>
     )
   }
 };
 
-// PrebuiltCategory.propTypes = {
-//   prebuilt: PropTypes.shape({
-//     type: PropTypes.string.isRequired,
-//     configs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-//   }).isRequired,
-//   gridUI: PropTypes.shape({}),
-//   gameboard: PropTypes.shape({}),
-// }
+PrebuiltCategory.propTypes = {
+  prebuilt: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    configs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  }).isRequired,
+  gridUI: PropTypes.shape({}),
+  gameboard: PropTypes.shape({}),
+}
 
 export default PrebuiltCategory;

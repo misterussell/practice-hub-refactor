@@ -7,7 +7,8 @@ const prebuilts = new Prebuilts();
 
 const PrebuiltOption = (props) => {
   const handleClick = () => {
-    console.log('click');
+    const cells = prebuilts.redraw(props.config.config, props.config.rowLength, props.gameboard.totalRowLength);
+    props.gameboard.setCellArray(cells);
   }
   return (
     <div
@@ -32,7 +33,8 @@ PrebuiltOption.propTypes = {
     config: PropTypes.arrayOf(PropTypes.number).isRequired,
     rowLength: PropTypes.number.isRequired,
   }).isRequired,
-  gridUI: PropTypes.shape({}),
+  gridUI: PropTypes.shape({}).isRequired,
+  gameboard: PropTypes.shape({}).isRequired,
 }
 
 export default PrebuiltOption;
