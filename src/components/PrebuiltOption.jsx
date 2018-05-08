@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ConfigPreview } from './';
+import Prebuilts from '../models/Prebuilts';
+
+const prebuilts = new Prebuilts();
 
 const PrebuiltOption = (props) => {
   const handleClick = () => {
-    console.log('click');
+    const cells = prebuilts.redraw(props.config.config, props.config.rowLength, props.gameboard.totalRowLength);
+    props.gameboard.setCellArray(cells);
   }
   return (
     <div
@@ -18,7 +22,6 @@ const PrebuiltOption = (props) => {
         config={props.config.config}
         rowLength={props.config.rowLength}
         gridUI={props.gridUI}
-        gameboard={props.gameboard}
       />
     </div>
   )
@@ -30,7 +33,8 @@ PrebuiltOption.propTypes = {
     config: PropTypes.arrayOf(PropTypes.number).isRequired,
     rowLength: PropTypes.number.isRequired,
   }).isRequired,
-  gridUI: PropTypes.shape({}),
+  gridUI: PropTypes.shape({}).isRequired,
+  gameboard: PropTypes.shape({}).isRequired,
 }
 
 export default PrebuiltOption;

@@ -18,8 +18,55 @@ describe('The prebuilt class', () => {
     maxLength = 5;
   });
 
+  it('Should have a static method isEven that returns a a bool for number values, else undefined.', () => {
+    expect(Prebuilts.isEven({foo: 'bar'})).toEqual(undefined);
+    expect(Prebuilts.isEven([1, 2, 3])).toEqual(undefined);
+    expect(Prebuilts.isEven('foo')).toEqual(undefined);
+    expect(Prebuilts.isEven(3)).toEqual(false);
+    expect(Prebuilts.isEven(13)).toEqual(false);
+    expect(Prebuilts.isEven(-3)).toEqual(false);
+    expect(Prebuilts.isEven(2)).toEqual(true);
+  });
+
+  it('Should have a static method findPadding that returns an array pair for the number of index that needs to be wrapped around a row, or column.', () => {
+    expect(Prebuilts.findPadding(5, 13)).toEqual([4, 4]);
+    expect(Prebuilts.findPadding(6, 13)).toEqual([4, 3]);
+  });
+
+  it('Should throw an error if findPadding is passed a param a >= param b.', () => {
+    expect(() => {
+      Prebuilts.findPadding(5, 1);
+    }).toThrow();
+  });
+
+  it('Should have a static method createStackedArray that takes an array and rowlength and returns an array of arrays so that each subarray is the rowlength, and the total length of all of the arrays matches that of the original array.', () => {
+    let matchCase = [
+      [0, 0, 0, 0],
+      [0, 1, 1, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 0],
+    ];
+    expect(Prebuilts.createStackedArray(prebuiltTest, rowLength)).toEqual(matchCase);
+  });
+
+  it('Should throw an error if an array that is not divisible by the rowLength is passed to createStacked Array.', () => {
+    let testArr = [
+      0, 0, 0, 0, 0, 0,
+      0, 0, 1, 1, 0, 0,
+      0, 1, 0, 0, 1, 0,
+      0, 0, 1, 1, 0, 0,
+      0, 0, 0, 0,
+    ];
+    expect(() => {
+      Prebuilts.createStackedArray(testArr, 6);
+    }).toThrow();
+    expect(() => {
+      Prebuilts.createStackedArray([1, 2, 3], 2);
+    }).toThrow();
+  });
+
   it('Should have a method getRowPadding that sets the rowPadding class property', () => {
-    expect(prebuilts.rowPadding.length).toEqual(0)
+    expect(prebuilts.rowPadding.length).toEqual(0);
     prebuilts.getRowPadding(5, 13);
     expect(prebuilts.rowPadding).toEqual([4, 4]);
   });
@@ -127,5 +174,78 @@ describe('The prebuilt class', () => {
     expect(() => {
       prebuilts.getColPadding(1, 2);
     }).toThrow();
-  })
+  });
+
+  it('Should have a function padRows that takes an array, a row length, and a dimension of the size of the game square and returns rows that are padded to fit the square.', () => {
+    let matchCase = [
+      [0, 0, 0, 0, 0],
+      [0, 0, 1, 1, 0],
+      [0, 0, 1, 1, 0],
+      [0, 0, 0, 0, 0],
+    ];
+    expect(prebuilts.padRows(prebuiltTest, 4, 5)).toEqual(matchCase);
+    prebuiltTest = [
+      0, 0, 0, 0, 0,
+      0, 0, 1, 0, 0,
+      0, 0, 1, 0, 0,
+      0, 0, 1, 0, 0,
+      0, 0, 0, 0, 0,
+    ];
+    matchCase = [
+      [0, 0, 0, 0, 0],
+      [0, 0, 1, 0, 0],
+      [0, 0, 1, 0, 0],
+      [0, 0, 1, 0, 0],
+      [0, 0, 0, 0, 0],
+    ];
+    expect(prebuilts.padRows(prebuiltTest, 5, 5)).toEqual(matchCase);
+    matchCase = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+    expect(prebuilts.padRows(prebuiltTest, 5, 11)).toEqual(matchCase);
+  });
+
+  it('Should have a redraw method that takes an arr, rowLength, and squareDimension value so that it redraws the shape of the prebuilt array to a square of the squareDimension size,', () => {
+    let matchCase = [
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 1, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+    ];
+    prebuiltTest = [
+      0, 0, 0,
+      0, 1, 0,
+      0, 0, 0,
+    ];
+    expect(prebuilts.redraw(prebuiltTest, 3, 5)).toEqual(matchCase);
+    matchCase = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+    prebuiltTest = [
+      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 1, 0, 0,
+      0, 1, 0, 0, 1, 0,
+      0, 1, 0, 0, 1, 0,
+      0, 0, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+    ];
+    expect(prebuilts.redraw(prebuiltTest, 6, 13)).toEqual(matchCase);
+  });
 });

@@ -65,13 +65,13 @@ describe('The Gameboard class', () => {
     }).toThrow();
     expect(() => {
       gameboard.updateCellArray({foo: 'bar'});
-    });
+    }).toThrow();
     expect(() => {
       gameboard.updateCellArray([0, 1, 2, 3]);
-    });
+    }).toThrow();
     expect(() => {
       gameboard.updateCellArray('foo, bar');
-    });
+    }).toThrow();
     expect(() => {
       gameboard.updateCellArray(gameboard.cells.length + 50);
     }).toThrow();
