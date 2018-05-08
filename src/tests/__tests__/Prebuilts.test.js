@@ -209,4 +209,43 @@ describe('The prebuilt class', () => {
     expect(prebuilts.padRows(prebuiltTest, 5, 11)).toEqual(matchCase);
   });
 
+  it('Should have a redraw method that takes an arr, rowLength, and squareDimension value so that it redraws the shape of the prebuilt array to a square of the squareDimension size,', () => {
+    let matchCase = [
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 1, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+    ];
+    prebuiltTest = [
+      0, 0, 0,
+      0, 1, 0,
+      0, 0, 0,
+    ];
+    expect(prebuilts.redraw(prebuiltTest, 3, 5)).toEqual(matchCase);
+    matchCase = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+    prebuiltTest = [
+      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 1, 0, 0,
+      0, 1, 0, 0, 1, 0,
+      0, 1, 0, 0, 1, 0,
+      0, 0, 1, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+    ];
+    expect(prebuilts.redraw(prebuiltTest, 6, 13)).toEqual(matchCase);
+  });
 });
