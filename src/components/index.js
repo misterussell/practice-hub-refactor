@@ -6,3 +6,4 @@ export { default as PrebuiltCategory } from './PrebuiltCategory';
 export { default as PrebuiltOption } from './PrebuiltOption';
 export { default as ConfigPreview } from './ConfigPreview';
 export { default as BasicD3Grid } from './BasicD3Grid';
+export { default as D3Rect } from './D3Rect';

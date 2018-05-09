@@ -100,21 +100,20 @@ export default class Prebuilts {
 
   padRows(arr, rowLength, squareDimension) {
     this.getRowPadding(rowLength, squareDimension);
-    return [...Prebuilts.createStackedArray(arr, rowLength)].map((row) => {
-      const left = Array(this.rowPadding[0]).fill(0);
-      const right = Array(this.rowPadding[1]).fill(0);
-      return [...left, ...row, ...right];
-    });
+    return [...Prebuilts.createStackedArray(arr, rowLength)]
+                        .map(row => [
+                          ...Array(this.rowPadding[0]).fill(0),
+                          ...row,
+                          ...Array(this.rowPadding[1]).fill(0),
+                        ]);
   }
 
   redraw(arr, rowLength, squareDimension) {
     const cols = this.getColPadding(arr.length, rowLength, squareDimension);
     const paddedRows = this.padRows(arr, rowLength, squareDimension);
     const newRowLength = paddedRows[0].length;
-    const top = Array(this.colPadding[0]).fill([])
-                                            .map(() => Array(newRowLength).fill(0));
-    const bottom = Array(this.colPadding[1]).fill([])
-                                               .map(() => Array(newRowLength).fill(0));
-    return [...top, ...paddedRows, ...bottom].reduce((a, b) =>  a.concat(b), []);
+    const top = Array(this.colPadding[0]).fill([]).map(() => Array(newRowLength).fill(0));
+    const bottom = Array(this.colPadding[1]).fill([]).map(() => Array(newRowLength).fill(0));
+    return [...top, ...paddedRows, ...bottom].reduce((a, b) => a.concat(b), []);
   }
 }
