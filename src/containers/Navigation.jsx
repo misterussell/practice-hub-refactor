@@ -24,9 +24,9 @@ const Navigation = props => (
               Game Of Life
             </NavItem>
           </LinkContainer>
-          <LinkContainer to="/d3">
+          <LinkContainer to="/CSVtoJSON">
             <NavItem eventKey={2}>
-              D3 Grid
+              CSV/JSON Converter
             </NavItem>
           </LinkContainer>
         </Nav>

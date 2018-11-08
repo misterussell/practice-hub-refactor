@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import Routes from './../../Routes';
-import { Navigation, Home, Gamezone, RouteNotFound } from './../../containers';
+import { Navigation, Home, Gamezone, CSVtoJSON, RouteNotFound } from './../../containers';
 
 import Store from '../../Store';
 
@@ -45,3 +45,16 @@ test('/gameOfLife path should redirect to Gamezone component', () => {
   expect(wrapper.find(Gamezone)).toHaveLength(1);
   expect(wrapper.find(Home)).toHaveLength(0);
 });
+
+test('/CSVtoJSON path should redirect to CSV converted component', () => {
+  const wrapper = mount(
+    <MemoryRouter
+      initialEntries={['/','/CSVtoJSON']}
+      initialIndex={1}
+    >
+      <Navigation />
+    </MemoryRouter>,
+  );
+  expect(wrapper.find(CSVtoJSON)).toHaveLength(1);
+  expect(wrapper.find(Home)).toHaveLength(0);
+})
