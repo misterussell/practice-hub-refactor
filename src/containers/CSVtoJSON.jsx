@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, ButtonGroup, Button } from 'react-bootstrap';
 
 export default class CSVtoJSONconverter extends Component {
   constructor(props) {
     super(props);
+    this.CSVinput = React.createRef();
   }
 
   render() {
@@ -11,18 +12,26 @@ export default class CSVtoJSONconverter extends Component {
       <main className="converter">
         <form className="CSV">
           <FormGroup controlId="formControlsTextarea">
-            <ControlLabel>CSV to JSON</ControlLabel>
+            <ControlLabel>Textarea</ControlLabel>
             <FormControl
               componentClass="textarea"
-              bsSize="lg"
-              border="none"
-              height="50vh"
               placeholder="Paste CSV data here"
+              height="50vh"
+              inputRef={ input => this.CSVinput = input }
             />
-            <HelpBlock>All comma seperated data pasted here</HelpBlock>
+            <HelpBlock>Validation is based on string length.</HelpBlock>
           </FormGroup>
         </form>
+        <ButtonGroup>
+          <Button>Convert</Button>
+          <Button onClick={ this.clearCSV }>Clear</Button>
+        </ButtonGroup>
       </main>
-    )
+    );
+  }
+
+  clearCSV = (e) => {
+    e.preventDefault();
+    this.CSVinput.value = '';
   }
 }
