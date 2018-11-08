@@ -21,10 +21,10 @@ export default class CSVtoJSONconverter extends Component {
             <FormControl
               componentClass="textarea"
               placeholder="Paste CSV data here"
-              height="50vh"
+              rows="15"
               inputRef={ input => this.CSVinput = input }
             />
-            <HelpBlock>Validation is based on string length.</HelpBlock>
+            <HelpBlock>Paste CSV data here.</HelpBlock>
           </FormGroup>
         </form>
         <ButtonGroup>
@@ -36,14 +36,14 @@ export default class CSVtoJSONconverter extends Component {
             <ControlLabel>JSON</ControlLabel>
             <FormControl
               componentClass="textarea"
-              height="50vh"
+              rows="15"
               inputRef={ input => this.JSONoutput = input }
             />
             <HelpBlock>CTRL + A to select all.</HelpBlock>
           </FormGroup>
         </form>
       </main>
-    )
+    );
   }
 
   clearCSV = (e) => {
