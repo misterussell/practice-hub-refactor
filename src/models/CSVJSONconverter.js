@@ -3,22 +3,44 @@ export default class CSVJSONconverter {
     this.rootStore = rootStore;
   }
 
-  csvJSON(csv) {
-    const lines = csv.split('\n');
-    const result = [];
-    const headers = lines[0].split(',');
+  csvToArray(text) {
+    let paragraph = '';
+    let row = [''];
+    let result = [row];
+    let i = 0;
+    let r = 0;
+    let s = !0;
+    let line;
 
-    for (let i = 1; i < lines.length; i += 1) {
-      const output = {};
-      const currentline = lines[i].split(',');
-
-      for (let j = 0; j < headers.length; j += 1) {
-        output[headers[j]] = currentline[j];
-      }
-
-      result.push(output);
+    for (line of text) {
+      if ('"' === line) {
+        if (s && line === paragraph) row[i] += line;
+        s = !s;
+      } else if (',' === line && s) line = row[++i] = '';
+      else if ('\n' === line && s) {
+        if ('\r' === paragraph) row[i] = row[i].slice(0, -1);
+        row = result[++r] = [line = ''];
+        i = 0;
+      } else row[i] += line;
+      paragraph = line;
     }
+    return result;
+  }
 
-    return JSON.stringify(result);
+  arrToObj(arr) {
+    const headers = arr[0];
+    const data = arr.slice(1)
+    const objData = data.map((lineItem, i) => {
+      const lineItemObj = {};
+      lineItem.forEach((dataPoint, j) => {
+        lineItemObj[headers[j]] = dataPoint;
+      });
+      return { lineItemObj };
+    });
+    return objData.map(obj => obj.lineItemObj);
+  }
+
+  convert(csv) {
+    return JSON.stringify(this.arrToObj(this.csvToArray(csv)), undefined, 4);
   }
 }
