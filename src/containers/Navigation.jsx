@@ -36,8 +36,4 @@ const Navigation = props => (
   </div>
 );
 
-// Navigation.propTypes = {
-//   children: PropTypes.shape({}).isRequired
-// };
-
 export default Navigation;

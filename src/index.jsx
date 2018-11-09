@@ -8,6 +8,7 @@
 // react deps
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 // hot reload for development
 import { AppContainer } from 'react-hot-loader';
 
@@ -20,7 +21,7 @@ const root = document.getElementById('root');
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Component />
+        <Component />
     </AppContainer>,
     root,
   );
