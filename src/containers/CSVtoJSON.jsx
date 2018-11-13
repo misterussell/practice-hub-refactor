@@ -5,11 +5,7 @@ export default class CSVtoJSONconverter extends Component {
   constructor(props) {
     super(props);
     this.CSVinput = React.createRef();
-    this.JSONoutput = React.createRef();
-    this.state = {
-      json: null,
-      csv: null,
-    };
+    this.CSVoutput = React.createRef();
   }
 
   render() {
@@ -33,11 +29,11 @@ export default class CSVtoJSONconverter extends Component {
         </ButtonGroup>
         <form className="CSV">
           <FormGroup controlId="formControlsTextarea">
-            <ControlLabel>JSON</ControlLabel>
+            <ControlLabel>Ouput</ControlLabel>
             <FormControl
               componentClass="textarea"
               rows="15"
-              inputRef={ input => this.JSONoutput = input }
+              inputRef={ input => this.CSVoutput = input }
             />
             <HelpBlock>CTRL + A to select all.</HelpBlock>
           </FormGroup>
@@ -55,6 +51,6 @@ export default class CSVtoJSONconverter extends Component {
     e.preventDefault();
     // const json = this.props.store.rootStore.CSVJSONconverter.csvJSON(this.CSVinput.value);
     const json = this.props.store.rootStore.CSVJSONconverter.convert(this.CSVinput.value);
-    this.JSONoutput.value = json;
+    this.CSVoutput.value = json;
   }
 }

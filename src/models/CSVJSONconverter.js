@@ -40,7 +40,23 @@ export default class CSVJSONconverter {
     return objData.map(obj => obj.lineItemObj);
   }
 
-  convert(csv) {
+  convertToJson(csv) {
     return JSON.stringify(this.arrToObj(this.csvToArray(csv)), undefined, 4);
+  }
+
+  jsonToCsv(json) {
+    const replacer = (key, val) => val === null ? '' : val;
+    const header = Object.keys(json[0]);
+    const csvData = json.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
+    console.log(csvData);
+    csvData.unshift(header.join(','));
+    csvData.join('\r\n');
+    return csvData.join('\r\n');
+  }
+
+  convert(csv) {
+    const csvArray = this.csvToArray(csv);
+    const csvObj = this.arrToObj(csvArray);
+    return this.jsonToCsv(csvObj);
   }
 }
