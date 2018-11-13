@@ -52,9 +52,9 @@ export default class ReportBuilder extends Component {
     if (this.CSVinput.value === '') {
       throw new Error('CSV empty.')
     }
-    const reportData = this.props.store.rootStore.CSVJSONconverter.convertToJson(this.CSVinput.value);
-    const output = this.props.store.rootStore.CSVreport.build(reportData);
-    this.CSVoutput.value = this.props.store.rootStore.CSVJSONconverter.jsonToCsv(output);
+    const output = this.props.store.rootStore.CSVreport.build(this.CSVinput.value);
+    console.log(output);
+    this.CSVoutput.value = output;
   }
 
 

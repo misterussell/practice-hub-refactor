@@ -75,6 +75,7 @@
     "babel-polyfill": "^6.26.0",
     "mobx": "^4.2.0",
     "mobx-react": "^5.0.0",
+    "papaparse": "^4.6.1",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
