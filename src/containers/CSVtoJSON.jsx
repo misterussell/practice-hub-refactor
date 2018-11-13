@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FormGroup, ControlLabel, FormControl, HelpBlock, ButtonGroup, Button, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import Papa from 'papaparse';
 
 export default class CSVtoJSONconverter extends Component {
   constructor(props) {
@@ -72,8 +73,10 @@ export default class CSVtoJSONconverter extends Component {
 
   convert = (e) => {
     e.preventDefault();
-    // const json = this.props.store.rootStore.CSVJSONconverter.csvJSON(this.CSVinput.value);
-    const json = this.props.store.rootStore.CSVJSONconverter.convertToJson(this.CSVinput.value);
-    this.JSONoutput.value = json;
+    if (this.state.toJson) {
+      let parsedCsv = Papa.parse(this.CSVinput.value, {header: true});
+      console.log(parsedCsv);
+      this.JSONoutput.value = JSON.stringify(parsedCsv.data, undefined, 4);
+    } else this.CSVoutput.value = Papa.unparse(this.JSONinput.value, {header: true });
   }
 }
