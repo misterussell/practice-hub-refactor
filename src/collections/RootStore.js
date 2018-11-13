@@ -3,6 +3,7 @@ import ObjectGameboard from '../models/ObjectGameboard';
 import Gameplay from '../models/Gameplay';
 import GridUI from '../models/GridUI';
 import CSVJSONconverter from '../models/CSVJSONconverter';
+import CSVReport from '../models/CSVReport';
 
 export default class RootStore {
   constructor() {
@@ -11,5 +12,6 @@ export default class RootStore {
     this.gameplay = new Gameplay(this);
     this.gridUI = new GridUI(this);
     this.CSVJSONconverter = new CSVJSONconverter(this);
+    this.CSVreport = new CSVReport(this);
   }
 }
