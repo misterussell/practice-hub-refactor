@@ -53,7 +53,6 @@ export default class ReportBuilder extends Component {
       throw new Error('CSV empty.')
     }
     const output = this.props.store.rootStore.CSVreport.build(this.CSVinput.value);
-    console.log(output);
     this.CSVoutput.value = output;
   }
 

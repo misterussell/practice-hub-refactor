@@ -28,6 +28,7 @@ export default class CSVReport {
           groups: datapoint.groups.split('|'),
           'check_first?': this.checkName(datapoint.first_name),
           'check_last?': this.checkName(datapoint.last_name),
+          'check_postal?': this.checkPostal(datapoint.postal),
         };
       } else {
         const newGroups = datapoint.groups.split('|').filter(group => !output[uniqueIdentifier].groups.includes[group]);
@@ -44,6 +45,7 @@ export default class CSVReport {
         groups: datapoint.groups.join('|'),
         'check_first?': datapoint['check_first?'],
         'check_last?': datapoint['check_last?'],
+        'check_postal?': datapoint['check_postal?'],
       };
     }));
   }
@@ -66,5 +68,14 @@ export default class CSVReport {
 
   fixName(str) {
     return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
+
+  checkPostal(code) {
+    const postalRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+
+    if (!postalRegex.test(code.toString())) {
+      return true;
+    }
+    return null;
   }
 }
