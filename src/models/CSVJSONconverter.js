@@ -48,7 +48,6 @@ export default class CSVJSONconverter {
     const replacer = (key, val) => val === null ? '' : val;
     const header = Object.keys(json[0]);
     const csvData = json.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
-    console.log(csvData);
     csvData.unshift(header.join(','));
     csvData.join('\r\n');
     return csvData.join('\r\n');

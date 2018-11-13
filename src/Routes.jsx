@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Home, Gamezone, D3Gameboard, RouteNotFound, CSVtoJSON } from './containers';
+import { Home, Gamezone, D3Gameboard, RouteNotFound, CSVtoJSON, ReportBuilder } from './containers';
 
 import Store from './Store';
 
@@ -10,6 +10,7 @@ const Routes = () => (
     <Route path="/gameOfLife" render={() => <Gamezone store={Store}/> } />
     <Route path="/d3" render={() => <D3Gameboard store={Store}/> } />
     <Route path="/CSVtoJSON" render={() => <CSVtoJSON store={Store}/> } />
+    <Route path="/reportBuilder" render={() => <ReportBuilder store={Store} />} />
     <Route component={RouteNotFound} />
   </Switch>
 );

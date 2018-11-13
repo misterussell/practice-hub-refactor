@@ -29,6 +29,11 @@ const Navigation = props => (
               CSV/JSON Converter
             </NavItem>
           </LinkContainer>
+          <LinkContainer to="/reportBuilder">
+            <NavItem eventKey={3}>
+              CSV Report Builder
+            </NavItem>
+          </LinkContainer>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
