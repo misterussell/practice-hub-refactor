@@ -23,6 +23,36 @@
 .converter {
   width: 80%;
   margin: 0 auto;
+
+  .converter-buttons {
+    width: 30%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .headers {
+    display: inline-block;
+    float: left;
+    width: 20%;
+    height: 80vh;
+    margin-top: 2.5vh;
+  }
+
+  .form-group {
+    float: right;
+    display: block;
+    width: 75%;
+    height: 20vh;
+    margin-top: 2.5vh;
+    margin-bottom: 10vh;
+  }
+
+  :after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
 }
 
 .textarea .form-control {

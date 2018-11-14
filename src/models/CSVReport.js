@@ -78,4 +78,8 @@ export default class CSVReport {
     }
     return null;
   }
+
+  getHeaders(csv) {
+    return csv.split('\n')[0].split(',');
+  }
 }

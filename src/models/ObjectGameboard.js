@@ -41,11 +41,8 @@ class ObjectGameboard {
     const newCells = this.cells.map((row, i, rowArr) => {
       return row.map((column, p) => {
         if (i === x && p === y) {
-          console.log('found');
-          console.log(rowArr[i][p]);
           return { ...column, active: true };
         }
-        console.log('notfound');
         return { ...column };
       });
     });
@@ -66,9 +63,7 @@ class ObjectGameboard {
         index += 1;
       }
     }
-    console.log(data);
     this.cells = data;
-    console.log(this.cells);
   }
 
   @action updateCell(cell) {

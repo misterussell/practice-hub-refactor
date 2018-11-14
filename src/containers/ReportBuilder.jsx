@@ -6,38 +6,45 @@ export default class ReportBuilder extends Component {
     super(props);
     this.CSVinput = React.createRef();
     this.CSVoutput = React.createRef();
+    this.state = {
+      headers: null,
+    }
   }
 
   render() {
     return (
       <main className="converter">
-        <form className="CSV">
-          <FormGroup controlId="formControlsTextarea">
+        <ButtonGroup className="converter-buttons">
+          <Button onClick={ this.getHeaders }>Grab Headers</Button>
+          <Button onClick={ this.convert }>Convert</Button>
+          <Button onClick={ this.clear }>Clear</Button>
+        </ButtonGroup>
+        <div className="headers">
+          {
+            this.state.headers
+              ? <div>headers to go here</div>
+              : <div>No headers loaded.</div>
+          }
+        </div>
+          <FormGroup controlId="form-controls-textarea" className="textarea-input">
             <ControlLabel>CSV Input</ControlLabel>
             <FormControl
               componentClass="textarea"
               placeholder="Paste CSV data here"
-              rows="15"
+              rows="10"
               inputRef={ input => this.CSVinput = input }
             />
             <HelpBlock>Paste CSV data here.</HelpBlock>
           </FormGroup>
-        </form>
-        <ButtonGroup>
-          <Button onClick={ this.convert }>Convert</Button>
-          <Button onClick={ this.clear }>Clear</Button>
-        </ButtonGroup>
-        <form className="CSV">
-          <FormGroup controlId="formControlsTextarea">
+          <FormGroup controlId="form-controls-textarea" className="textarea-input">
             <ControlLabel>CSV Output</ControlLabel>
             <FormControl
               componentClass="textarea"
-              rows="15"
+              rows="10"
               inputRef={ input => this.CSVoutput = input }
             />
             <HelpBlock>CTRL + A to select all.</HelpBlock>
           </FormGroup>
-        </form>
       </main>
     )
   }
@@ -56,5 +63,12 @@ export default class ReportBuilder extends Component {
     this.CSVoutput.value = output;
   }
 
-
+  getHeaders = (e) => {
+    e.preventDefault();
+    if (this.CSVinput.value === '') {
+      throw new Error('CSV empty.')
+    }
+    const headers = this.props.store.rootStore.CSVreport.getHeaders(this.CSVinput.value);
+    console.log(headers);
+  }
 }
