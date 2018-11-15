@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl, HelpBlock, ButtonGroup, Button, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, ButtonGroup, Button, ToggleButtonGroup, ToggleButton, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 export default class ReportBuilder extends Component {
   constructor(props) {
@@ -8,6 +8,7 @@ export default class ReportBuilder extends Component {
     this.CSVoutput = React.createRef();
     this.state = {
       headers: null,
+      headerState: null,
     }
   }
 
@@ -19,13 +20,24 @@ export default class ReportBuilder extends Component {
           <Button onClick={ this.convert }>Convert</Button>
           <Button onClick={ this.clear }>Clear</Button>
         </ButtonGroup>
-        <div className="headers">
+        <ListGroup className="headers">
           {
             this.state.headers
-              ? <div>headers to go here</div>
-              : <div>No headers loaded.</div>
+              ?
+                    this.state.headers.map((header, i) => {
+                      return (
+                        <ListGroupItem
+                          key={ header }
+                          active={ this.state.headerState[i] }
+                          onClick={ () => this.updateHeaderButton(i) }
+                        >
+                          { header }
+                        </ListGroupItem>
+                      );
+                    })
+              : <ListGroupItem>No headers loaded.</ListGroupItem>
           }
-        </div>
+        </ListGroup>
           <FormGroup controlId="form-controls-textarea" className="textarea-input">
             <ControlLabel>CSV Input</ControlLabel>
             <FormControl
@@ -69,6 +81,17 @@ export default class ReportBuilder extends Component {
       throw new Error('CSV empty.')
     }
     const headers = this.props.store.rootStore.CSVreport.getHeaders(this.CSVinput.value);
-    console.log(headers);
+    const headerState = headers.map(header => false);
+    this.setState({ headers, headerState });
+  }
+
+  updateHeaderButton = (headerNumber) => {
+    let nextState = this.state.headerState[headerNumber] ? false : true;
+    let headerState = this.state.headerState.map((currentState, i) => {
+      if (i === headerNumber) {
+        return nextState
+      } else return currentState;
+    });
+    this.setState({ headerState });
   }
 }
