@@ -74,7 +74,7 @@ export default class ReportBuilder extends Component {
                 value = { this.state.uniqueIdentifier }
                 onChange = { this.handleUniqueIdentifier }
               >
-                <option value={ `none`}>no unique identifier</option>
+                <option value={ `none` }>no unique identifier</option>
                 {
                   this.state.headers
                     ? this.state.headers.map(header => {
@@ -93,9 +93,12 @@ export default class ReportBuilder extends Component {
             </FormGroup>
               <div className="subfield-description">
                 {
-`The unique identifier allows you to check data for duplication, and merge fields together.
+`The unique identifier is used to compare data for duplication, lookups, and merging.
 
 Example: If your data contains multiple lines for the same person where each line shares an email, select email as your unique identifier.
+
+foo@bar.com, member, 78704
+foo@bar.com, volunteer, 78721
                   `
                 }
               </div>
@@ -106,20 +109,20 @@ Example: If your data contains multiple lines for the same person where each lin
           <ListGroupItem className="subfield-title">Merge Data</ListGroupItem>
               <div className="subfield-description">
                 {
-`Merging allows you to combine multiple of columns of data.
+`Merging allows the following functionality:
 
-Data will be seperated by a pipe delimiter.
+  1. Merge a single, pipe-delimited, column with different values into a pipe-delimited field.
+  2. Merge multiple, comma separated, columns into a pipe-delimited field.
 
-Example: If more than one column are better suited in a single column, select the columns to merge here.`
-                }
+Merged data will be seperated by a pipe delimiter: "foo|bar"`
+              }
               </div>
-              <FormGroup controlId="unique-selector" className="subfield-option">
+              <FormGroup controlId="merge-fields" className="subfield-option no-title">
                 <FormControl
                   componentClass="select"
                   value = { this.state.uniqueIdentifier }
-                  onChange = { this.handleUniqueIdentifier }
+                  onChange = { this.handleMergeFields }
                 >
-                  <option value={ `none`}>load headers to select</option>
                   {
                     this.state.headers
                       ? this.state.headers.map(header => {
@@ -132,10 +135,31 @@ Example: If more than one column are better suited in a single column, select th
                           </option>
                           )
                         })
-                      : null
+                      : <option value={ `none` }>load headers to select</option>
+                  }
+                </FormControl>
+                <FormControl
+                  componentClass="select"
+                  value = { this.state.uniqueIdentifier }
+                  onChange = { this.handleMergeFields }
+                >
+                  {
+                    this.state.headers
+                      ? this.state.headers.map(header => {
+                        return (
+                          <option
+                            key={ header }
+                            value={ header }
+                          >
+                            { header }
+                          </option>
+                          )
+                        })
+                      : <option value={ `none` }>load headers to select</option>
                   }
                 </FormControl>
               </FormGroup>
+            <i class="fas fa-plus-square"></i>
             </Well>
           </div>
         </ListGroup>
@@ -146,6 +170,11 @@ Example: If more than one column are better suited in a single column, select th
   handleUniqueIdentifier = (e) => {
     e.preventDefault();
     this.setState({ uniqueIdentifier: e.target.value });
+  }
+
+  handleMergeFields = (e) => {
+    e.preventDefault();
+    console.log('merge field handled');
   }
 
   clear = (e) => {

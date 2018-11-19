@@ -5,6 +5,10 @@ export default class CSVReport {
     this.rootStore = rootStore;
   }
 
+  inputHeaders = [];
+  outputHeaders = [];
+  uniqueIdentifier = null;
+
   // build this so that there are selectable columns allowing for the user to
   // build the report they'd like to
   build(csv) {
@@ -80,6 +84,48 @@ export default class CSVReport {
   }
 
   getHeaders(csv) {
-    return csv.split('\n')[0].split(',');
+    if (!csv) {
+      throw new Error('No data provided to parse for headers.');
+    } this.inputHeaders = csv.split('\n')[0].split(',');
+  }
+
+  saveOutput(headers) {
+    if (!headers) {
+      throw new Error('No headers provided to save to class instance of CSVReport.');
+    } else if (!Array.isArray(headers)) {
+      throw new Error('Headers provided not an array.');
+    } this.outputHeaders = headers;
+  }
+
+  saveUniqueIden(id) {
+    if (!id) {
+      throw new Error('No unique identifier to save to class instance of CSVReport.');
+    } else if (typeof id !== 'string') {
+      throw new Error('Unique identifier must be a header string.');
+    } this.uniqueIdentifier = id;
+  }
+
+  buildBySelection(csv) {
+    if (!csv) {
+      throw new Error('No CSV data provided to parse.')
+    } else {
+      const parsedCSV = Papa.parse(csv, { header: true });
+      const output = {};
+
+      if (parsedCSV.errors.length > 0) {
+        console.log(parsedCSV.errors);
+        throw new Error('Errors parsing CSV data. Please see console for data.');
+      } else {
+        console.log(parsedCSV);
+        parsedCSV.data.forEach((datapoint, i) => {
+          const id = 15486047 * i;
+          if (!output[this.uniqueIdentifier]) {
+            output[id] = {
+              id,
+            };
+          }
+        });
+      }
+    }
   }
 }
