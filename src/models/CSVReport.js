@@ -113,19 +113,37 @@ export default class CSVReport {
       const output = {};
 
       if (parsedCSV.errors.length > 0) {
-        console.log(parsedCSV.errors);
         throw new Error('Errors parsing CSV data. Please see console for data.');
       } else {
-        console.log(parsedCSV);
         parsedCSV.data.forEach((datapoint, i) => {
-          const id = 15486047 * i;
-          if (!output[this.uniqueIdentifier]) {
-            output[id] = {
-              id,
-            };
+          const id = 15486047 * (i + 1);
+
+          if (this.uniqueIdentifier) {
+            if (!output[this.uniqueIdentifier]) {
+              // unique searching to go here
+            }
+          } else if (!output[id]) {
+            // no unique searching to go here
+            output[id] = { id };
+            this.outputHeaders.forEach(header => output[id][header] = datapoint[header]);
           }
         });
       }
+      return Papa.unparse(CSVReport.clearObjKeys(output));
     }
+  }
+
+  static clearObjKeys(object){
+    return Object.keys(object).map((key) => {
+      return object[key];
+    }).map(cleanObject => {
+      // i don't love that these are being mutated so heavily
+      delete cleanObject.id;
+      return cleanObject;
+    });
+  }
+
+  static removeId(csv) {
+    return csv.split('\n').map(row => row.split(','));
   }
 }

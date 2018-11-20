@@ -97,9 +97,8 @@ export default class ReportBuilder extends Component {
 
 Example: If your data contains multiple lines for the same person where each line shares an email, select email as your unique identifier.
 
-foo@bar.com, member, 78704
-foo@bar.com, volunteer, 78721
-                  `
+      foo@bar.com,member,78704
+      foo@bar.com,volunteer,78704`
                 }
               </div>
             </Well>
@@ -111,10 +110,13 @@ foo@bar.com, volunteer, 78721
                 {
 `Merging allows the following functionality:
 
-  1. Merge a single, pipe-delimited, column with different values into a pipe-delimited field.
+  1. Merge a single pipe-delimited field into anoter pipe-delimited field.
   2. Merge multiple, comma separated, columns into a pipe-delimited field.
 
-Merged data will be seperated by a pipe delimiter: "foo|bar"`
+  - Merged data will be seperated by a pipe delimiter: "foo|bar"
+  - Duplicate entries can be removed if desired
+
+      foo@bar.com,member|volunteer,78704`
               }
               </div>
               <FormGroup controlId="merge-fields" className="subfield-option no-title">
@@ -122,6 +124,7 @@ Merged data will be seperated by a pipe delimiter: "foo|bar"`
                   componentClass="select"
                   value = { this.state.uniqueIdentifier }
                   onChange = { this.handleMergeFields }
+                  className="combo-select"
                 >
                   {
                     this.state.headers
@@ -142,6 +145,7 @@ Merged data will be seperated by a pipe delimiter: "foo|bar"`
                   componentClass="select"
                   value = { this.state.uniqueIdentifier }
                   onChange = { this.handleMergeFields }
+                  className="combo-select"
                 >
                   {
                     this.state.headers
@@ -159,7 +163,7 @@ Merged data will be seperated by a pipe delimiter: "foo|bar"`
                   }
                 </FormControl>
               </FormGroup>
-            <i class="fas fa-plus-square"></i>
+            <i className="fas fa-plus-square"></i>
             </Well>
           </div>
         </ListGroup>
@@ -199,7 +203,8 @@ Merged data will be seperated by a pipe delimiter: "foo|bar"`
     if (this.CSVinput.value === '') {
       throw new Error('CSV empty.')
     }
-    const headers = this.props.store.rootStore.CSVreport.getHeaders(this.CSVinput.value);
+    this.props.store.rootStore.CSVreport.getHeaders(this.CSVinput.value);
+    const headers = this.props.store.rootStore.CSVreport.inputHeaders;
     const headerState = headers.map(header => false);
     this.setState({ headers, headerState });
   }

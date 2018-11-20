@@ -28,7 +28,7 @@ describe('The CSV report builder', () => {
     }).toThrow();
   });
 
-  it('should have a saveOutput method that updates the headers class property', () => {
+  it('should have a saveOutput method that updates the headers class property based on an arr of str', () => {
     const report = new CSVreport();
     const positiveTest = ['first_name', 'last_name', 'email'];
     const negativeTest = ['foo', 'bar'];
@@ -40,7 +40,7 @@ describe('The CSV report builder', () => {
     }).toThrow();
     expect(() => {
       report.saveOutput(null);
-    })
+    });
   });
 
   it('should have a saveUniqueIden method that updates the uniqueIdentifier class property', () => {
@@ -60,14 +60,46 @@ describe('The CSV report builder', () => {
 
   it('should have a buildBySelection method that returns compiled data', () => {
     const report = new CSVreport();
-    report.buildBySelection(shortCsv);
+    const selectedOutput =   report.saveOutput(['first_name', 'last_name', 'email']);
+
+    const compiledReport = report.buildBySelection(shortCsv);
     expect(() => {
-      report.buildBySelection()
+      report.buildBySelection();
     }).toThrow();
     expect(() => {
       // throws because Papa cannot read this null stream.
       // error handling in Papa.parse docs
       report.buildBySelection(123);
-    }).toThrow()
+    }).toThrow();
+    expect(compiledReport).toMatch('first_name,last_name,email');
+    expect(compiledReport).toMatch('maxwell,russell,max@misterussell.com');
   });
+
+  it('should have a clearObjKeys method that removes a parent Object key and id property and returns an array of objects', () => {
+    const testObj = {
+      obj1: {
+        id: 'obj1',
+        foo: 'bar',
+        baz: 'crow',
+      },
+      obj2: {
+        id: 'obj2',
+        nerf: 'lang',
+        traz: 'moo',
+      },
+    };
+    const cleanedObj = CSVreport.clearObjKeys(testObj);
+    expect(cleanedObj.length).toBe(2);
+    expect(cleanedObj).toContainEqual(
+      {
+        foo: 'bar',
+        baz: 'crow',
+      },
+      {
+        nerf: 'lang',
+        traz: 'moo',
+      });
+  });
+
+
 });

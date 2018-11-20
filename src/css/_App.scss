@@ -67,6 +67,12 @@
     white-space: pre-wrap;
   }
 
+  .combo-select {
+    display: inline-block;
+    width: fit-content;
+    margin-right: 1vw;
+  }
+
   #input-textarea.form-group {
     display: block;
     margin: 0 auto;
