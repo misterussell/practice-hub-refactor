@@ -14,6 +14,8 @@ import {
   Panel,
 } from 'react-bootstrap';
 
+import { MergeSelector } from '../components';
+
 export default class ReportBuilder extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,8 @@ export default class ReportBuilder extends Component {
       headerState: null,
       uniqueIdentifier: ``,
       outputColumns: [],
+      mergeToField: ``,
+      mergeFromField: ``,
     }
   }
 
@@ -45,87 +49,37 @@ export default class ReportBuilder extends Component {
           <Button onClick={ this.convert }>Convert</Button>
           <Button onClick={ this.clear }>Clear</Button>
         </ButtonGroup>
-        <ListGroup className="headers">
-          <h4 className="header-list-title">Report Columns</h4>
-          {
-            this.state.headers
-              ?
-                    this.state.headers.map((header, i) => {
-                      return (
-                        <ListGroupItem
-                          key={ header }
-                          active={ this.state.headerState[i] }
-                          onClick={ () => this.updateHeaderButton(i) }
-                        >
-                          { header }
-                        </ListGroupItem>
-                      );
-                    })
-              : <ListGroupItem>No headers loaded.</ListGroupItem>
-          }
-        </ListGroup>
-        <ListGroup className="subfields">
-          <div className="subfield-group">
-          <Well>
-          <ListGroupItem className="subfield-title">Unique Identifier</ListGroupItem>
-            <FormGroup controlId="unique-selector" className="subfield-option">
-              <FormControl
-                componentClass="select"
-                value = { this.state.uniqueIdentifier }
-                onChange = { this.handleUniqueIdentifier }
-              >
-                <option value={ `none` }>no unique identifier</option>
-                {
-                  this.state.headers
-                    ? this.state.headers.map(header => {
-                      return (
-                        <option
-                          key={ header }
-                          value={ header }
-                        >
-                          { header }
-                        </option>
-                        )
+        <div className="report-tools">
+          <ListGroup className="headers">
+            <h4 className="header-list-title">Report Columns</h4>
+            {
+              this.state.headers
+                ?
+                      this.state.headers.map((header, i) => {
+                        return (
+                          <ListGroupItem
+                            key={ header }
+                            active={ this.state.headerState[i] }
+                            onClick={ () => this.updateHeaderButton(i) }
+                          >
+                            { header }
+                          </ListGroupItem>
+                        );
                       })
-                    : null
-                }
-              </FormControl>
-            </FormGroup>
-              <div className="subfield-description">
-                {
-`The unique identifier is used to compare data for duplication, lookups, and merging.
-
-Example: If your data contains multiple lines for the same person where each line shares an email, select email as your unique identifier.
-
-      foo@bar.com,member,78704
-      foo@bar.com,volunteer,78704`
-                }
-              </div>
-            </Well>
-          </div>
-          <div className="subfield-group">
-          <Well>
-          <ListGroupItem className="subfield-title">Merge Data</ListGroupItem>
-              <div className="subfield-description">
-                {
-`Merging allows the following functionality:
-
-  1. Merge a single pipe-delimited field into anoter pipe-delimited field.
-  2. Merge multiple, comma separated, columns into a pipe-delimited field.
-
-  - Merged data will be seperated by a pipe delimiter: "foo|bar"
-  - Duplicate entries can be removed if desired
-
-      foo@bar.com,member|volunteer,78704`
-              }
-              </div>
-              <FormGroup controlId="merge-fields" className="subfield-option no-title">
+                : <ListGroupItem>No headers loaded.</ListGroupItem>
+            }
+          </ListGroup>
+          <ListGroup className="subfields">
+            <div className="subfield-group">
+            <Well>
+            <ListGroupItem className="subfield-title">Unique Identifier</ListGroupItem>
+              <FormGroup controlId="unique-selector" className="subfield-option">
                 <FormControl
                   componentClass="select"
                   value = { this.state.uniqueIdentifier }
-                  onChange = { this.handleMergeFields }
-                  className="combo-select"
+                  onChange = { this.handleUniqueIdentifier }
                 >
+                  <option value={ `none` }>no unique identifier</option>
                   {
                     this.state.headers
                       ? this.state.headers.map(header => {
@@ -138,35 +92,69 @@ Example: If your data contains multiple lines for the same person where each lin
                           </option>
                           )
                         })
-                      : <option value={ `none` }>load headers to select</option>
-                  }
-                </FormControl>
-                <FormControl
-                  componentClass="select"
-                  value = { this.state.uniqueIdentifier }
-                  onChange = { this.handleMergeFields }
-                  className="combo-select"
-                >
-                  {
-                    this.state.headers
-                      ? this.state.headers.map(header => {
-                        return (
-                          <option
-                            key={ header }
-                            value={ header }
-                          >
-                            { header }
-                          </option>
-                          )
-                        })
-                      : <option value={ `none` }>load headers to select</option>
+                      : null
                   }
                 </FormControl>
               </FormGroup>
-            <i className="fas fa-plus-square"></i>
-            </Well>
-          </div>
-        </ListGroup>
+                <div className="subfield-description">
+                  {
+  `The unique identifier is used to compare data for duplication, lookups, and merging.
+
+Example: If your data contains multiple lines for the same person where each line shares an email, select email as your unique identifier.
+
+        email,roles,zip_code
+        foo@bar.com,member,78704
+        foo@bar.com,volunteer,78704
+          >>  >>
+        email,roles,zip_code
+        foo@bar.com,member|volunteer,78704
+
+        `
+                  }
+                </div>
+              </Well>
+            </div>
+            <div className="subfield-group">
+            <Well>
+            <ListGroupItem className="subfield-title">Merge Data</ListGroupItem>
+                <div className="subfield-description">
+                  {
+  `Merging allows the following functionality:
+
+    1. Merge a single pipe-delimited field into anoter pipe-delimited field.
+    2. Merge comma separated fields into a pipe-delimited field.
+
+    - Merged data will be seperated by a pipe delimiter: "foo|bar"
+    - Duplicate entries can be removed if desired
+
+        email,fav_movie_1,fav_movie_2,ticket_holder
+        foo@bar.com,dune,blade runner,false
+          >>  >>
+        email,fav_movie_1,ticket_holder
+        foo@bar.com,dune|blade runner,false
+        `
+                }
+                </div>
+                <Panel bsStyle="info">
+                  <Panel.Heading>
+                    <Panel.Title componentClass="h5">
+                      Select Fields to Merge
+                    </Panel.Title>
+                  </Panel.Heading>
+                  <Panel.Body>
+                    <MergeSelector
+                      headers={ this.state.headers }
+                      mergeToField={ this.state.mergeToField }
+                      mergeFromField={ this.state.mergeFromField }
+                      callback={ this.handleMergeFields }
+                    />
+                  <i className="fas fa-plus-square"></i>
+                </Panel.Body>
+              </Panel>
+              </Well>
+            </div>
+          </ListGroup>
+        </div>
       </main>
     )
   }
@@ -177,8 +165,10 @@ Example: If your data contains multiple lines for the same person where each lin
   }
 
   handleMergeFields = (e) => {
-    e.preventDefault();
+    console.log(e);
     console.log('merge field handled');
+
+    this.setState({ [e[0]]: e[1]} )
   }
 
   clear = (e) => {

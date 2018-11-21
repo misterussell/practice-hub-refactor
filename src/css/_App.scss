@@ -33,6 +33,10 @@
     display: block;
   }
 
+  .report-tools {
+    margin-top: 1vh;
+  }
+
   .headers {
     display: inline-block;
     width: 20%;
@@ -64,6 +68,7 @@
   .subfield-description {
     display: block;
     margin-top: .5vh;
+    margin-bottom: 1vh;
     white-space: pre-wrap;
   }
 
